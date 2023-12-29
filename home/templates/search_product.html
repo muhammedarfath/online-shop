@@ -1,0 +1,279 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %} 
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories_responsive.css' %}">
+<style>
+ 
+      .slider{
+        padding: 30px; 
+        border-radius: 3px;
+        top: 50%;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+       
+      }
+      .range-slider {
+        width: 233px;
+        text-align: center;
+        position: relative;
+        padding-bottom: 20px;
+        margin-left: -9px;
+      }
+
+      .range-slider .rangeValues {
+        display: block;
+        border:1px solid ;
+        padding: 20px;
+        font-size: 22px;
+        margin-bottom: 35px;
+      }
+      input[type=range] {
+        -webkit-appearance: none;
+        border: 1px solid white;
+        width: 222px;
+        position: absolute;
+        left: 0;
+      }
+      input[type=range]::-webkit-slider-runnable-track {
+        width: 222px;
+        height: 5px;
+        background: #ddd;
+        border: none;
+        border-radius: 3px;
+      }
+      input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #000;
+        margin-top: -6px;
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
+      }
+      input[type=range]:focus {
+        outline: none;
+      }
+      input[type=range]:focus::-webkit-slider-runnable-track {
+        background: #ccc;
+      }
+  </style>
+  
+
+
+
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active"><a href="index.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Men's</a></li>
+                </ul>
+            </div>
+
+            <!-- Sidebar -->
+
+            <div class="sidebar" >
+                <div class="sidebar_section">
+                    <div class="sidebar_title">
+                        <h5>Product Category</h5>
+                    </div>
+                    <ul class="sidebar_categories">
+                        <li>
+                        <a href="/category_products/">
+                            <span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>All Product
+                        </a>
+                        {% for category in categories_list %}
+                        <li class="{% if category.id == active_category %}active{% endif %}">
+                            <a href="/category_products/?categories={{ category.id }}">
+                                <span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>{{ category.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+
+
+            </div>
+
+            <!-- Main Content -->
+
+            <div class="main_content">
+
+                <!-- Products -->
+
+                <div class="products_iso">
+                    <div class="row">
+                        <div class="col">
+
+                            <!-- Product Sorting -->
+
+                            <div class="product_sorting_container product_sorting_container_top">
+                                <div class="pages d-flex flex-row align-items-center">
+                                    <div>
+                                        {% if products.has_other_pages %}
+                                        <ul style="display: flex; list-style: none; padding: 0;" class="paginator">
+                                            {% if products.has_previous %}
+                                            <li style="margin-right: 5px;" class="paginator-item"><a style="text-decoration: none; padding: 5px 10px; background-color: #fe4c50; color: #fff; border-radius: 5px; cursor: pointer;" class="paginator-link" href="?page={{products.previous_page_number}}">Previous</a></li>
+                                            {% else %}
+                                            <li style="margin-right: 5px;" class="paginator-item disabled"><a style="text-decoration: none; padding: 5px 10px; background-color: #fe4c50; color: #fff; border-radius: 5px; cursor: pointer;" class="paginator-link" href="#">Previous</a></li>
+                                            {% endif %}
+
+                                            {% for i in products.paginator.page_range%}
+                                            {% if products.number == i %}
+                                            <li style="margin-right: 5px;" class="paginator-item active"><a style="text-decoration: none; padding: 5px 10px; background-color: #fe4c50; color: #fff; border-radius: 5px; cursor: pointer;" class="paginator-link" href="#">{{i}}</a></li>
+                                            {% else %}
+                                            <li style="margin-right: 5px;" class="paginator-item"><a style="text-decoration: none; padding: 5px 10px; background-color: #fe4c50; color: #fff; border-radius: 5px; cursor: pointer;" class="paginator-link" href="?page={{i}}">{{ i }}</a></li>
+                                            {% endif %}
+                                            {% endfor %}
+                                            <!-- Add more list items for additional pages as needed -->
+                                        </ul>
+                                        {% endif %}
+                                    </div>
+                                    {% if products.has_next %}
+                                    <div id="next_page_1" class="page_next"><a href="?page={{ products.next_page_number }}"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
+                                    {% else %}
+                                    <div id="next_page_1" class="page_next disabled"><a href=""><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+
+                            <!-- Product Grid -->
+
+                            <div class="product-grid">
+
+                                <!-- Product 1 -->
+
+                                {% for i in products %}
+									
+                                
+                                <div class="product-item men">
+                                    <div class="product discount product_filter">
+                                        <a href="{% url 'product_detail' i.id  %}">
+                                        <div class="product_image">
+                                             <img style="height:15rem" src="{{ i.image.url }}" alt="image">
+                                        </div>
+                                        </a>
+                                        <div class="favorite favorite_left"></div>
+                                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                        <div class="product_info">
+                                            <h6 class="product_name"><a href="">{{ i.title }}</a></h6>
+                                            <div class="product_price">{{ i.price }}<span>$590.00</span></div>
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                           
+                                
+                                {% endfor %}
+
+                                
+                            </div>
+
+                            <!-- Product Sorting -->
+
+                            <div class="product_sorting_container product_sorting_container_bottom clearfix">
+
+                                <div class="pages d-flex flex-row align-items-center">
+                                    <div>
+                                        {% if products.has_other_pages %}
+                                        <ul style="display: flex; list-style: none; padding: 0;" class="paginator">
+                                            {% if products.has_previous %}
+                                            <li style="margin-right: 5px;" class="paginator-item"><a style="text-decoration: none; padding: 5px 10px; background-color: #fe4c50; color: #fff; border-radius: 5px; cursor: pointer;" class="paginator-link" href="?page={{products.previous_page_number}}">Previous</a></li>
+                                            {% else %}
+                                            <li style="margin-right: 5px;" class="paginator-item disabled"><a style="text-decoration: none; padding: 5px 10px; background-color: #fe4c50; color: #fff; border-radius: 5px; cursor: pointer;" class="paginator-link" href="#">Previous</a></li>
+                                            {% endif %}
+
+                                            {% for i in products.paginator.page_range%}
+                                            {% if products.number == i %}
+                                            <li style="margin-right: 5px;" class="paginator-item active"><a style="text-decoration: none; padding: 5px 10px; background-color: #fe4c50; color: #fff; border-radius: 5px; cursor: pointer;" class="paginator-link" href="#">{{i}}</a></li>
+                                            {% else %}
+                                            <li style="margin-right: 5px;" class="paginator-item"><a style="text-decoration: none; padding: 5px 10px; background-color: #fe4c50; color: #fff; border-radius: 5px; cursor: pointer;" class="paginator-link" href="?page={{i}}">{{ i }}</a></li>
+                                            {% endif %}
+                                            {% endfor %}
+                                            <!-- Add more list items for additional pages as needed -->
+                                        </ul>
+                                        {% endif %}
+                                    </div>
+                                    {% if products.has_next %}
+                                    <div id="next_page_1" class="page_next"><a href="?page={{ products.next_page_number }}"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
+                                    {% else %}
+                                    <div id="next_page_1" class="page_next disabled"><a href=""><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Benefit -->
+
+<div class="benefit">
+    <div class="container">
+        <div class="row benefit_row">
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>free shipping</h6>
+                        <p>Suffered Alteration in Some Form</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>cach on delivery</h6>
+                        <p>The Internet Tend To Repeat</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>45 days return</h6>
+                        <p>Making it Look Like Readable</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>opening all week</h6>
+                        <p>8AM - 09PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block foot %} {% include 'foot.html' %}  {% endblock %}

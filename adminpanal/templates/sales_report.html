@@ -1,0 +1,183 @@
+{% extends "adminbase.html" %}
+
+{% block title %} admin{% endblock %}
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .table-container {
+        margin: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .date-inputs {
+        margin-bottom: 10px;
+        padding: 15px;
+        background-color: #b7c2d0;
+        color: #fff;
+        text-align: center;
+        border-bottom: 2px solid #b7c2d0;
+    }
+
+    label {
+        margin-right: 10px;
+    }
+
+    input[type="date"] {
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .generate-button,
+    .download-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #fff;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    .generate-button {
+        background-color: #28a745;
+    }
+    .status-input {
+        margin-top: 10px; /* Adjust the margin to position it appropriately */
+    }
+    .generate-button:hover {
+        background-color: #218838;
+    }
+
+    .download-button {
+        background-color:#fe4c50;
+    }
+
+    .download-button:hover {
+        background-color: #fe4c50;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        border: 1px solid #dee2e6;
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+    .date-inputs {
+        margin-bottom: 10px;
+        padding: 15px;
+        background-color: #b7c2d0;
+        color: #fff;
+        text-align: center;
+        border-bottom: 2px solid #b7c2d0;
+        display: flex; /* Make it a flex container */
+        justify-content: space-between; /* Space between child elements */
+    }
+
+    .date-inputs label,
+    .date-inputs input,
+    .date-inputs select,
+    .date-inputs button {
+        margin-right: 10px;
+    }
+
+</style>
+<form method="get" action="{% url 'generate_report' %}">
+    <div class="main" style="margin-top:8rem;">
+        <div class="buttons-container">
+            <h2>Sales Report</h2>
+            <a href="{% url 'sales_report_pdf' %}" class="btn btn-secondary">Download PDF</a>
+        </div>
+        <div class="table-container">
+            <div class="date-inputs">
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" name="start_date">
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" name="end_date">
+    
+                <div class="status-input">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status">
+                        <option value="" selected>All Status</option>
+                        {% for choice in order_status_choices %}
+                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <button type="submit" class="generate-button">Generate Report</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-nowrap">Id</th>
+                        <th scope="col" class="text-nowrap">User</th>
+                        <th scope="col" class="text-nowrap">Order Number</th>
+                        <th scope="col" class="text-nowrap">Order Date</th>
+                        <th scope="col" class="text-nowrap">Status</th>
+                        <th scope="col" class="text-nowrap">Tax</th>
+                        <th scope="col" class="text-nowrap">Shipping</th>
+                        <th scope="col" class="text-nowrap">Grand Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                        <tr>
+                            <td>{{ sale.id }}</td>
+                            <td>{{ sale.user.username }}</td>
+                            <td>{{ sale.order_number }}</td>
+                            <td>{{ sale.create_at }}</td>
+                            <td>{{ sale.get_status_display}}</td>
+                            <td>₹ {{ sale.tax }}</td>
+                            <td>₹ 40</td>
+                            <td>₹ {{ sale.order_total }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+{% block foot %} {% include 'footer.html' %} {% endblock %}

@@ -1,0 +1,55 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %} 
+
+
+<div class="container-fluid" style="margin-top:8rem;">
+  <div class="row">
+      {% include 'user_panel.html' %}
+      <div class="col-lg-8 pb-5">
+          <!-- Item-->
+          {% if coupon %}
+          {% for i in coupon %}
+          <div class="card w-75 coupon-card" style="border: 2px solid #f0f0f0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+              <div class="card-body">
+                  <div style="text-align: center; padding: 1rem;">
+                      <img src="{{ i.image.url }}" alt="Coupon Image" style="max-width: 100%; height: 16rem;">
+                  </div>
+                  <h5 class="card-title" style="font-size: 1.5rem; color: #333;">Get Exciting Discounts!</h5>
+                  <p class="card-text" style="color: #666;">{{i.offer_name}}.</p>
+                  <button class="btn btn-primary show-code-btn" style="background-color: #ff3f6c; border-color: #ff3f6c;">Show Coupon Code</button>
+                  <p class="coupon-code" style="display: none; font-size: 1.2rem; color: #333; margin-top: 1rem;">Coupon Code: <span class="code-value">{{i.code}}</span></p>
+              </div>
+          </div>
+        {% endfor %}
+          {% else %}
+          <div class="alert alert-info" role="alert">
+              No coupon available at the moment.
+          </div>
+      {% endif %}
+      </div>
+  </div>
+</div>
+
+<script>
+    // Use querySelectorAll to select all buttons and add the event listener to each
+    document.querySelectorAll('.show-code-btn').forEach(function(button) {
+      button.addEventListener('click', function () {
+        // Use closest to find the parent coupon card and then find the coupon code within that card
+        var couponCode = this.closest('.coupon-card').querySelector('.coupon-code');
+        couponCode.style.display = 'block';
+      });
+    });
+  </script>
+
+
+
+{% endblock %}
+
+{% block foot %} {% include 'foot.html' %}  {% endblock %}
+
+

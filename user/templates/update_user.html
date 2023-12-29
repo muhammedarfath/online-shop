@@ -1,0 +1,115 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %} 
+
+
+
+    <div class="container-fluid" style="margin-top:8rem;">
+        <div class="row">
+            {% include 'user_panel.html' %}
+            <div class="col-lg-8 pb-5">
+                    <form class="row" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account-fn">First Name</label>
+                            <input class="form-control" name="first_name" type="text" id="account-fn" value="{{user_form.first_name}}" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account-ln">Last Name</label>
+                            <input class="form-control" name="last_name" type="text" id="account-ln" value="{{user_form.last_name}}" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account-ln">User Name</label>
+                            <input class="form-control" name="username" type="text" id="account-ln" value="{{user_form.username}}" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account-email">E-mail Address</label>
+                            <input class="form-control" name="email" type="email"  value="{{user_form.email}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account-ln">Address</label>
+                            <input class="form-control" name="address" type="text" id="account-ln" value="{{ profile.address }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account-phone">Phone Number</label>
+                            <input class="form-control" name="phone" type="text" id="account-phone" value="{{profile.phone}}" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account-email">Country</label>
+                            <input class="form-control" name="country" type="text" id="account-email" value="{{profile.country}}" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account-email">state</label>
+                            <input class="form-control" name="state" type="text" id="account-email" value="{{profile.country}}" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account-ln">City</label>
+                            <input class="form-control" name="city" type="text" id="account-ln" value="{{profile.city}}" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="avatar">Image</label>
+                            <input type="file" class="form-control"  value="{{ profile.image }}" name="image" style="width: 100%;">
+                        </div>  
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="avatar">Banner Image</label>
+                            <input type="file" class="form-control"  value="{{ profile.banner_image }}" name="bannerimage" style="width: 100%;">
+                        </div>  
+                    </div>
+                    <div class="col-12">
+                        <hr class="mt-2 mb-3">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            
+                            <button class="btn btn-style-1 btn-primary" type="submit" >Update Profile</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{%endblock%}
+
+
+
+{% block foot %} {% include 'foot.html' %}  {% endblock %}

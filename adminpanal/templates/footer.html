@@ -1,0 +1,63 @@
+
+{% load static %}
+
+
+
+
+
+<script src="{% static 'adminpanel/bundlee5ca.js' %}"></script>
+<script src="{% static 'adminpanel/scriptse5ca.js' %}"></script>
+<script src="{% static 'adminpanel/demo-settingse5ca.js' %}"></script>
+<script src="{% static 'adminpanel/chart-analyticse5ca.js' %}"></script>
+<script src="{% static 'adminpanel/libs/jqvmape5ca.js' %}"></script>
+<script src="{% static 'adminpanel/assets/js/messagese5ca.js'%}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  // Check if the backend message is present
+  {% if messages %}
+    // Extract and format the message text from the backend
+    var messageText = "";
+    {% for message in messages %}
+      messageText += "{{ message|safe }}" + '\n';  // Use |safe to mark the message as safe HTML
+    {% endfor %}
+  
+    // Use Swal.fire to display the message as a modal
+    Swal.fire(messageText)
+  {% endif %}
+</script>
+<script>
+  function confirmRefund(orderProductId) {
+      const refundUrl = `{% url 'refund' id=123 %}`.replace('123', orderProductId);
+      Swal.fire({
+          title: 'Confirm Refund',
+          text: 'Are you sure you want refund?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, approve refund!'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // User clicked "Yes, approve refund!" - execute AJAX call
+              approveRefund(refundUrl);
+          }
+      });
+  }
+
+  function approveRefund(refundUrl) {
+      // AJAX call to the dynamic refund URL
+      $.ajax({
+          url: refundUrl,
+          type: 'GET',
+          success: function (data) {
+              // Handle success, e.g., show a success message
+              Swal.fire('Refund Approved!', 'The refund has been successfully approved.', 'success');
+              // You can also redirect to another page or perform additional actions here
+          },
+          error: function (error) {
+              // Handle error, e.g., show an error message
+              Swal.fire('Error', 'An error occurred while processing the refund.', 'error');
+          }
+      });
+  }
+</script>

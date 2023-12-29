@@ -1,0 +1,895 @@
+{% extends "homebase.html" %}
+{%load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %} 
+    
+<!-- BREADCRUMB -->
+{% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> {% endcomment %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+<style>
+    body{
+        background:#eee;
+        margin-top:40px;
+    }
+    
+    .card {
+        box-shadow: 0 0 2px 0 rgb(0 0 0 / 10%);
+        margin-bottom: 24px;
+    }
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid #ecf2f5;
+        border-radius: .25rem;
+    }
+    .avatar-lg {
+        height: 4.5rem;
+        width: 4.5rem;
+    }
+    .rounded-circle {
+        border-radius: 50%!important;
+    }
+    .img-thumbnail {
+        padding: .25rem;
+        background-color: #ecf2f5;
+        border: 1px solid #dee2e6;
+        border-radius: .25rem;
+        max-width: 100%;
+        height: auto;
+    }
+    .avatar-sm {
+        height: 2.25rem;
+        width: 2.25rem;
+    }
+    .rounded-circle {
+        border-radius: 50%!important;
+    }
+    .me-2 {
+        margin-right: .75rem!important;
+    }
+    .avatar-md {
+        height: 3.5rem;
+        width: 3.5rem;
+    }
+    .rounded-circle {
+        border-radius: 50%!important;
+    }
+    .bg-transparent {
+        --bs-bg-opacity: 1;
+        background-color: transparent!important;
+    }
+    .post-user-comment-box {
+        background-color: #f2f8fb;
+        margin: 0 -.75rem;
+        padding: 1rem;
+        margin-top: 20px;
+    }
+    .simplebar-wrapper {
+        overflow: hidden;
+        width: inherit;
+        height: inherit;
+        max-width: inherit;
+        max-height: inherit;
+    }
+    .simplebar-height-auto-observer-wrapper {
+        box-sizing: inherit!important;
+        height: 100%;
+        width: 100%;
+        max-width: 1px;
+        position: relative;
+        float: left;
+        max-height: 1px;
+        overflow: hidden;
+        z-index: -1;
+        padding: 0;
+        margin: 0;
+        pointer-events: none;
+        flex-grow: inherit;
+        flex-shrink: 0;
+        flex-basis: 0;
+    }
+    .font-13 {
+        font-size: 13px!important;
+    }
+    .btn-soft-info {
+        color: #45bbe0;
+        background-color: rgba(69,187,224,.18);
+        border-color: rgba(69,187,224,.12);
+    }
+    .social-list-item {
+        height: 2rem;
+        width: 2rem;
+        line-height: calc(2rem - 2px);
+        display: block;
+        border: 2px solid #adb5bd;
+        border-radius: 50%;
+        color: #adb5bd;
+    }
+    .comment-area-box .comment-area-btn {
+        background-color: #f2f8fb;
+        padding: 10px;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        border-radius: 0 0 .2rem .2rem;
+    }
+    .widget-author {
+      margin-bottom: 58px;
+    }
+    .author-card {
+      position: relative;
+      padding-bottom: 48px;
+      background-color: #fff;
+      box-shadow: 0 12px 20px 1px rgba(64, 64, 64, .09);
+    }
+    .author-card .author-card-cover {
+      position: relative;
+      width: 100%;
+      height: 100px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .author-card .author-card-cover::after {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      content: '';
+      opacity: 0.5;
+    }
+    .author-card .author-card-cover > .btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 0 10px;
+    }
+    .author-card .author-card-profile {
+      display: table;
+      position: relative;
+      margin-top: -22px;
+      padding-right: 15px;
+      padding-bottom: 16px;
+      padding-left: 20px;
+      z-index: 5;
+    }
+    .author-card .author-card-profile .author-card-avatar, .author-card .author-card-profile .author-card-details {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .author-card .author-card-profile .author-card-avatar {
+      width: 85px;
+      border-radius: 50%;
+      box-shadow: 0 8px 20px 0 rgba(0, 0, 0, .15);
+      overflow: hidden;
+    }
+    .author-card .author-card-profile .author-card-avatar > img {
+      display: block;
+      width: 100%;
+    }
+    .author-card .author-card-profile .author-card-details {
+      padding-top: 20px;
+      padding-left: 15px;
+    }
+    .author-card .author-card-profile .author-card-name {
+      margin-bottom: 2px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .author-card .author-card-profile .author-card-position {
+      display: block;
+      color: #8c8c8c;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .author-card .author-card-info {
+      margin-bottom: 0;
+      padding: 0 25px;
+      font-size: 13px;
+    }
+    .author-card .author-card-social-bar-wrap {
+      position: absolute;
+      bottom: -18px;
+      left: 0;
+      width: 100%;
+    }
+    .author-card .author-card-social-bar-wrap .author-card-social-bar {
+      display: table;
+      margin: auto;
+      background-color: #fff;
+      box-shadow: 0 12px 20px 1px rgba(64, 64, 64, .11);
+    }
+    .btn-style-1.btn-white {
+        background-color: #fff;
+    }
+    .list-group-item i {
+        display: inline-block;
+        margin-top: -1px;
+        margin-right: 8px;
+        font-size: 1.2em;
+        vertical-align: middle;
+    }
+    .mr-1, .mx-1 {
+        margin-right: .25rem !important;
+    }
+    
+    .list-group-item.active:not(.disabled) {
+        border-color: #e7e7e7;
+        background: #fff;
+        color: #fe4c50;
+        cursor: default;
+        pointer-events: none;
+    }
+    .list-group-flush:last-child .list-group-item:last-child {
+        border-bottom: 0;
+    }
+    
+    .list-group-flush .list-group-item {
+        border-right: 0 !important;
+        border-left: 0 !important;
+    }
+    
+    .list-group-flush .list-group-item {
+        border-right: 0;
+        border-left: 0;
+        border-radius: 0;
+    }
+    .list-group-item.active {
+        z-index: 2;
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .list-group-item:last-child {
+        margin-bottom: 0;
+        border-bottom-right-radius: .25rem;
+        border-bottom-left-radius: .25rem;
+    }
+    a.list-group-item, .list-group-item-action {
+        color: #404040;
+        font-weight: 600;
+    }
+    .list-group-item {
+        padding-top: 16px;
+        padding-bottom: 16px;
+        -webkit-transition: all .3s;
+        transition: all .3s;
+        border: 1px solid #e7e7e7 !important;
+        border-radius: 0 !important;
+        color: #404040;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+    .list-group-item {
+        position: relative;
+        display: block;
+        padding: .75rem 1.25rem;
+        margin-bottom: -1px;
+        background-color: #fff;
+        border: 1px solid rgba(0,0,0,0.125);
+    }
+    
+    .product-card {
+      position: relative;
+      max-width: 380px;
+      padding-top: 12px;
+      padding-bottom: 43px;
+      transition: all 0.35s;
+      border: 1px solid #e7e7e7;
+    }
+    .product-card .product-head {
+      padding: 0 15px 8px;
+    }
+    .product-card .product-head .badge {
+      margin: 0;
+    }
+    .product-card .product-thumb {
+      display: block;
+    }
+    .product-card .product-thumb > img {
+      display: block;
+      width: 100%;
+    }
+    .product-card .product-card-body {
+      padding: 0 20px;
+      text-align: center;
+    }
+    .product-card .product-meta {
+      display: block;
+      padding: 12px 0 2px;
+      transition: color 0.25s;
+      color: rgba(140, 140, 140, .75);
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .product-card .product-meta:hover {
+      color: #8c8c8c;
+    }
+    .product-card .product-title {
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .product-card .product-title > a {
+      transition: color 0.3s;
+      color: #343b43;
+      text-decoration: none;
+    }
+    .product-card .product-title > a:hover {
+      color: #ac32e4;
+    }
+    .product-card .product-price {
+      display: block;
+      color: #404040;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: normal;
+    }
+    .product-card .product-price > del {
+      margin-right: 6px;
+      color: rgba(140, 140, 140, .75);
+    }
+    .product-card .product-buttons-wrap {
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      width: 100%;
+    }
+    .product-card .product-buttons {
+      display: table;
+      margin: auto;
+      background-color: #fff;
+      box-shadow: 0 12px 20px 1px rgba(64, 64, 64, .11);
+    }
+    .product-card .product-button {
+      display: table-cell;
+      position: relative;
+      width: 50px;
+      height: 40px;
+      border-right: 1px solid rgba(231, 231, 231, .6);
+    }
+    .product-card .product-button:last-child {
+      border-right: 0;
+    }
+    .product-card .product-button > a {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: all 0.3s;
+      color: #404040;
+      font-size: 16px;
+      line-height: 40px;
+      text-align: center;
+      text-decoration: none;
+    }
+    .product-card .product-button > a:hover {
+      background-color: #ac32e4;
+      color: #fff;
+    }
+    .product-card:hover {
+      border-color: transparent;
+      box-shadow: 0 12px 20px 1px rgba(64, 64, 64, .09);
+    }
+    .product-category-card {
+      display: block;
+      max-width: 400px;
+      text-align: center;
+      text-decoration: none !important;
+    }
+    .product-category-card .product-category-card-thumb {
+      display: table;
+      width: 100%;
+      box-shadow: 0 12px 20px 1px rgba(64, 64, 64, .09);
+    }
+    .product-category-card .product-category-card-body {
+      padding: 20px;
+      padding-bottom: 28px;
+    }
+    .product-category-card .main-img, .product-category-card .thumblist {
+      display: table-cell;
+      padding: 15px;
+      vertical-align: middle;
+    }
+    .product-category-card .main-img > img, .product-category-card .thumblist > img {
+      display: block;
+      width: 100%;
+    }
+    .product-category-card .main-img {
+      width: 65%;
+      padding-right: 10px;
+    }
+    .product-category-card .thumblist {
+      width: 35%;
+      padding-left: 10px;
+    }
+    .product-category-card .thumblist > img:first-child {
+      margin-bottom: 6px;
+    }
+    .product-category-card .product-category-card-meta {
+      display: block;
+      padding-bottom: 9px;
+      color: rgba(140, 140, 140, .75);
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .product-category-card .product-category-card-title {
+      margin-bottom: 0;
+      transition: color 0.3s;
+      color: #343b43;
+      font-size: 18px;
+    }
+    .product-category-card:hover .product-category-card-title {
+      color: #ac32e4;
+    }
+    .product-gallery {
+      position: relative;
+      padding: 45px 15px 0;
+      box-shadow: 0 12px 20px 1px rgba(64, 64, 64, .09);
+    }
+    .product-gallery .gallery-item::before {
+      display: none !important;
+    }
+    .product-gallery .gallery-item::after {
+      box-shadow: 0 8px 24px 0 rgba(0, 0, 0, .26);
+    }
+    .product-gallery .video-player-button, .product-gallery .badge {
+      position: absolute;
+      z-index: 5;
+    }
+    .product-gallery .badge {
+      top: 15px;
+      left: 15px;
+      margin-left: 0;
+    }
+    .product-gallery .video-player-button {
+      top: 0;
+      right: 15px;
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+    }
+    .product-gallery .product-thumbnails {
+      display: block;
+      margin: 0 -15px;
+      padding: 12px;
+      border-top: 1px solid #e7e7e7;
+      list-style: none;
+      text-align: center;
+    }
+    .product-gallery .product-thumbnails > li {
+      display: inline-block;
+      margin: 10px 3px;
+    }
+    .product-gallery .product-thumbnails > li > a {
+      display: block;
+      width: 94px;
+      transition: all 0.25s;
+      border: 1px solid transparent;
+      background-color: #fff;
+      opacity: 0.75;
+    }
+    .product-gallery .product-thumbnails > li:hover > a {
+      opacity: 1;
+    }
+    .product-gallery .product-thumbnails > li.active > a {
+      border-color: #ac32e4;
+      cursor: default;
+      opacity: 1;
+    }
+    .product-meta {
+      padding-bottom: 10px;
+    }
+    .product-meta > a, .product-meta > i {
+      display: inline-block;
+      margin-right: 5px;
+      color: rgba(140, 140, 140, .75);
+      vertical-align: middle;
+    }
+    .product-meta > i {
+      margin-top: 2px;
+    }
+    .product-meta > a {
+      transition: color 0.25s;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .product-meta > a:hover {
+      color: #8c8c8c;
+    }
+
+
+
+		.chat{
+			margin-top: auto;
+			margin-bottom: auto;
+		}
+
+		.contacts_body{
+			padding:  0.75rem 0 !important;
+			overflow-y: auto;
+			white-space: nowrap;
+		}
+		.msg_card_body{
+			overflow-y: auto;
+		}
+		.card-header{
+			border-radius: 15px 15px 0 0 !important;
+			border-bottom: 0 !important;
+		}
+	 .card-footer{
+		border-radius: 0 0 15px 15px !important;
+			border-top: 0 !important;
+	}
+		.container{
+			align-content: center;
+		}
+		.search{
+			border-radius: 15px 0 0 15px !important;
+			background-color: rgba(0,0,0,0.3) !important;
+			border:0 !important;
+			color:white !important;
+		}
+		.search:focus{
+		     box-shadow:none !important;
+           outline:0px !important;
+		}
+		.type_msg{
+			background-color: rgba(0,0,0,0.3) !important;
+			border:0 !important;
+			color:white !important;
+			height: 60px !important;
+			overflow-y: auto;
+		}
+			.type_msg:focus{
+		     box-shadow:none !important;
+           outline:0px !important;
+		}
+		.attach_btn{
+	border-radius: 15px 0 0 15px !important;
+	background-color: rgba(0,0,0,0.3) !important;
+			border:0 !important;
+			color: white !important;
+			cursor: pointer;
+		}
+		.send_btn{
+	border-radius: 0 15px 15px 0 !important;
+	background-color: rgba(0,0,0,0.3) !important;
+			border:0 !important;
+			color: white !important;
+			cursor: pointer;
+		}
+		.search_btn{
+			border-radius: 0 15px 15px 0 !important;
+			background-color: rgba(0,0,0,0.3) !important;
+			border:0 !important;
+			color: white !important;
+			cursor: pointer;
+		}
+		.contacts{
+			list-style: none;
+			padding: 0;
+		}
+		.contacts li{
+			width: 100% !important;
+			padding: 5px 10px;
+			margin-bottom: 15px !important;
+		}
+	.active{
+			background-color: rgba(0,0,0,0.3);
+	}
+		.user_img{
+			height: 70px;
+			width: 70px;
+			border:1.5px solid #f5f6fa;
+		
+		}
+		.user_img_msg{
+			height: 40px;
+			width: 40px;
+			border:1.5px solid #f5f6fa;
+		
+		}
+	.img_cont{
+			position: relative;
+			height: 70px;
+			width: 70px;
+	}
+	.img_cont_msg{
+			height: 40px;
+			width: 40px;
+	}
+	.online_icon{
+		position: absolute;
+		height: 15px;
+		width:15px;
+		background-color: #4cd137;
+		border-radius: 50%;
+		bottom: 0.2em;
+		right: 0.4em;
+		border:1.5px solid white;
+	}
+	.offline{
+		background-color: #c23616 !important;
+	}
+	.user_info{
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-left: 15px;
+	}
+	.user_info span{
+		font-size: 20px;
+		color: white;
+	}
+	.user_info p{
+	font-size: 10px;
+	color: rgba(255,255,255,0.6);
+	}
+	.video_cam{
+		margin-left: 50px;
+		margin-top: 5px;
+	}
+	.video_cam span{
+		color: white;
+		font-size: 20px;
+		cursor: pointer;
+		margin-right: 20px;
+	}
+	.msg_cotainer{
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-left: 10px;
+		border-radius: 25px;
+		background-color: #82ccdd;
+		padding: 10px;
+		position: relative;
+	}
+	.msg_cotainer_send{
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-right: 10px;
+		border-radius: 25px;
+		background-color: #78e08f;
+		padding: 10px;
+		position: relative;
+	}
+	.msg_time{
+		position: absolute;
+		left: 0;
+		bottom: -15px;
+		color: rgba(255,255,255,0.5);
+		font-size: 10px;
+	}
+	.msg_time_send{
+		position: absolute;
+		right:0;
+		bottom: -15px;
+		color: rgba(255,255,255,0.5);
+		font-size: 10px;
+	}
+	.msg_head{
+		position: relative;
+	}
+	#action_menu_btn{
+		position: absolute;
+		right: 10px;
+		top: 10px;
+		color: white;
+		cursor: pointer;
+		font-size: 20px;
+	}
+	.action_menu{
+		z-index: 1;
+		position: absolute;
+		padding: 15px 0;
+		background-color: rgba(0,0,0,0.5);
+		color: white;
+		border-radius: 15px;
+		top: 30px;
+		right: 15px;
+		display: none;
+	}
+	.action_menu ul{
+		list-style: none;
+		padding: 0;
+	margin: 0;
+	}
+	.action_menu ul li{
+		width: 100%;
+		padding: 10px 15px;
+		margin-bottom: 5px;
+	}
+	.action_menu ul li i{
+		padding-right: 10px;
+	
+	}
+	.action_menu ul li:hover{
+		cursor: pointer;
+		background-color: rgba(0,0,0,0.2);
+	}
+	@media(max-width: 576px){
+	.contacts_card{
+		margin-bottom: 15px !important;
+	}
+	}    
+</style>
+<div class="container-fluid" style="margin-top:12rem;">
+    <div class="row">
+        <div class="col-xl-5">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="d-flex align-items-start">
+                      {% if profile.image.url %}
+                          <img src="{{ profile.image.url }}" class="rounded-circle avatar-lg img-thumbnail" alt="image">
+                      {% else %}
+                          <img src="{% static 'images/profile.png' %}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
+                      {% endif %}
+
+                        <div class="w-100 ms-3">
+                            <h4 class="my-0">{{profile.user_name}}</h4>
+                            <p class="text-muted">@{{user.username}}</p>
+                            <a type="button" href="/user/update/" class="btn btn-danger ">Update Profile</a>
+                            <a type="button" href="/user/password/" class="btn btn-success ">Change Password</a>
+                            <a type="button" href="/user/wallet/" class="btn btn-warning ">wallet</a>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <h4 class="font-13 text-uppercase">About Me :</h4>
+                        {% comment %} <p class="text-muted font-13 mb-3">
+                            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.
+                        </p> {% endcomment %}
+                        <p class="text-muted mb-2 font-13"><strong>Full Name :</strong> <span class="ms-2">{{profile.user_name}}</span></p>
+                    
+                        <p class="text-muted mb-2 font-13"><strong>Mobile :</strong><span class="ms-2">{{profile.phone}}</span></p>
+                    
+                        <p class="text-muted mb-2 font-13"><strong>Email :</strong> <span class="ms-2">{{user.email}}</span></p>
+                    
+                        <p class="text-muted mb-1 font-13"><strong>Location :</strong> <span class="ms-2">{{profile.country}},{{profile.city}}</span></p>
+                    </div>                                    
+                </div>                                 
+            </div> <!-- end card -->
+
+           
+
+            <div class="wizard">
+                <nav class="list-group list-group-flush">
+<a class="list-group-item active" href="" >
+        <i class="fa fa-user text-muted "></i>Profile</a><a class="list-group-item" href="/user/comments/"><i class="fa fa-map-marker text-muted"></i>My Reviews</a>
+        <a class="list-group-item" href="/user/orders/">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><i class="fa fa-shopping-bag mr-1 text-muted"></i>
+                    <div class="d-inline-block font-weight-medium text-uppercase">Orders List</div>
+                </div><span class="badge badge-secondary"></span>
+            </div>
+        </a>
+                    <a class="list-group-item" href="/user/favorites/">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="fa fa-heart mr-1 text-muted"></i>
+                                <div class="d-inline-block font-weight-medium text-uppercase">My Wishlist</div>
+                            </div><span class="badge badge-secondary"></span>
+                        </div>
+                    </a>
+                    <a class="list-group-item" href="/user/coupon/" >
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="fa fa-tag mr-1 text-muted"></i>
+                                <div class="d-inline-block font-weight-medium text-uppercase">My Coupons</div>
+                            </div><span class="badge badge-secondary"></span>
+                        </div>
+                    </a>
+                </nav>
+            </div>
+   
+        </div> <!-- end col-->
+
+        <div class="col-xl-7">
+            <div class="card">
+                <div class="card-body">
+                    <!-- comment box -->
+
+                    <div class="author-card pb-3">
+                        <a href="/userprofile/">
+
+                        {% if profile.banner_image %}
+                            <div class="author-card-cover" style="background-image: url({{ profile.banner_image.url }});"></div>
+                        {% else %}
+                            <div class="author-card-cover" style="background-image: url({% static 'images/slider_1.jpg' %});"></div>
+                        {% endif %}
+
+                        <div class="author-card-profile">
+        
+                        </a>
+                        </div>
+                    </div>
+                    <!-- end comment box -->
+
+                    <!-- Story Box-->
+                    <div class="border border-light p-2 mb-3">
+
+                    </div>
+
+                    {% comment %} What chat room would you like to enter?<br>
+                    <input id="room-name-input" type="text" size="100"><br> {% endcomment %}
+                    <a href="/user/adminchat/" class="btn btn-success" type="button" id="myButton">CHAT WITH OUR CUSTOMER SERVICE</a>
+                    <p>Note: For any inquiries related to customer service, please use the chat option.</p>
+                                        
+                    <script>
+                      document.getElementById("myButton").addEventListener("click", function() {
+                          // Make an AJAX request to your Django server
+                          var xhr = new XMLHttpRequest();
+                          xhr.open("GET", "/user/adminchat/", true);
+                          xhr.onreadystatechange = function() {
+                              if (xhr.readyState == 4 && xhr.status == 200) {
+                                  // Handle the response if needed
+                                  console.log(xhr.responseText);
+                              }
+                          };
+                          xhr.send();
+                      });
+                  </script>
+                
+                    {% comment %} <script>
+                        document.querySelector('#room-name-input').focus();
+                        document.querySelector('#room-name-input').onkeyup = function(e) {
+                            if (e.key === 'Enter') {  // enter, return
+                                document.querySelector('#room-name-submit').click();
+                            }
+                        };
+                
+                        document.querySelector('#room-name-submit').onclick = function(e) {
+                            var roomName = document.querySelector('#room-name-input').value;
+                            window.location.pathname = '/user/' + roomName + '/';
+                        };
+                    </script> {% endcomment %}
+
+                </div>
+            </div> <!-- end card-->
+
+        </div> <!-- end col -->
+    </div>
+    <!-- end row-->
+
+</div>
+
+
+
+    
+{% endblock %}
+
+{% block foot %} {% include 'foot.html' %}  {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

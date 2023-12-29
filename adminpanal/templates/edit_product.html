@@ -1,0 +1,244 @@
+{% extends "adminbase.html" %}
+
+{% block title %} admin{% endblock %}
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+<style>
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    
+
+    .card-title {
+        margin-bottom: 0;
+    }
+
+    table {
+        width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+        overflow-x: auto;
+    }
+    
+    th,
+    td {
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-top: 4px; /* Add some spacing between inputs */
+    }
+    
+
+    /* You can customize the delete button styling */
+    td a {
+        display: inline-block;
+        padding: 8px 12px; /* Adjust padding as needed */
+        background-color: #ff4d4d;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>    
+<div class="nk-content" style="width: 100%;">
+    <form action="" method="post" enctype="multipart/form-data">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="components-preview wide-md mx-auto">
+                    <div class="nk-block-head nk-block-head-lg wide-sm">
+                        <div class="nk-block-head-content">
+                            <div class="row g-gs">
+                                <div class="col-lg-12">
+                                    <div class="card h-100" style="width: 100%;">
+                                        <div class="card-inner">
+                                            <div class="card-head">
+                                                <h5 class="card-title">Edit Product</h5>
+                                            </div>
+                                            
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-full-name">Product Title</label>
+                                                    <input type="text" name="name" value="{{ product.title }}" class="form-control" id="cf-full-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-full-name">Product Description</label>
+                                                    <textarea name="description" class="form-control" id="cf-full-name">{{ product.description }}</textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-full-name">Product Details</label>
+                                                    <textarea name="details" class="form-control" id="cf-full-name">{{ product.detail }}</textarea>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-full-name">Product Sale Price</label>
+                                                    <input type="text" name="price1" class="form-control" value="{{ product.price }}" id="cf-full-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-full-name">Product regular Price</label>
+                                                    <input type="text" name="price2" value="{{ product.amount }}" class="form-control" id="cf-full-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-color">Category</label>
+                                                    <select name="category" class="form-control" id="cf-color"> <!-- Use "category" as the name attribute -->
+                                                        <option value="{{ product.category.id}}" selected>{{ product.category.title}}</option>
+                                                        {% for category in categories %}
+                                                            <option value="{{ category.id }}">{{ category.title }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-color">Brand</label>
+                                                    <select name="brand" class="form-control" id="cf-color"> <!-- Use "category" as the name attribute -->
+                                                        <option value="{{ product.brand.id}}" selected>{{ product.brand.name}}</option>
+                                                        {% for br in brand %}
+                                                            <option value="{{ br.id }}">{{ br.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-size">Status</label>
+                                                    <select name="status" class="form-control" id="cf-size"> <!-- Use "status" as the name attribute -->
+                                                        <option value="{{ product.status }}" selected>{{ product.status }}</option>
+                                                        {% for status in product_status %}
+                                                        <option value="{{ status.0 }}">{{ status.1 }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-size">Variant Type</label>
+                                                    <select name="variant" class="form-control" id="cf-size"> <!-- Use "status" as the name attribute -->
+                                                        <option value="{{ product.variant }}" selected>{{ product.variant }}</option>
+                                                        {% for variant in product_variant %}
+                                                        <option value="{{ variant.0 }}">{{ variant.1 }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-subject">Image</label>
+                                                    <input name="image" type="file" class="form-control" id="cf-subject">
+                                                    {% if product.image %}
+                                                        <img src="{{ product.image.url }}" alt="Product Image" width="100">
+                                                    {% endif %}
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-subject">Variants Image</label>
+                                                    <input name="variant_images" type="file" class="form-control" id="cf-subject" multiple accept="image/*">
+                                                    {% for image in images %}
+                                                    <img style="height:123px;" src="{{ image.image.url }}" alt="Variant Image" width="100">
+                                                {% endfor %}
+                                                
+                                                </div>
+
+                                            {% if messages %}
+                                            <ul class="messages">
+                                                {% for message in messages %}
+                                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                                                    {{ message }}
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="components-preview wide-md mx-auto">
+                    <div class="nk-block-head nk-block-head-lg wide-sm">
+                        <div class="nk-block-head-content">
+                            <div class="row g-gs">
+                                <div class="col-lg-12">
+                                    <div class="card h-100" style="width: 200%;">
+                                        <div class="container-fluid">
+                                            <div class="card-head">
+                                                <h5 class="card-title">Variants</h5>
+                                            </div>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>TITLE</th>
+                                                        <th>COLOR</th>
+                                                        <th>SIZE</th>
+                                                        <th>IMAGE ID</th>
+                                                        <th>QUANTITY</th>
+                                                        <th>PRICE</th>
+                                                        <th>IMAGE TAG</th>
+                                                        <th>DELETE?</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for variant in variants %}
+                                                        <tr>
+                                                            <td><input type="text" name="vtitle_{{ variant.id }}" value="{{ variant.title }}"></td>
+                                                            <td>
+                                                                <select name="color_{{ variant.id }}" style="background-color: #e1e1e1; color: #333; padding: 5px;">
+                                                                    <option value="{{ variant.color.id }}">{{ variant.color }}</option>
+                                                                    {% for i in color %}
+                                                                        <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                    {% endfor %}
+                                                                    <!-- Add more options as needed -->
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select name="size_{{ variant.id }}" style="background-color: #e1e1e1; color: #333; padding: 5px;">   
+                                                                    <option value="{{ variant.size.id }}">{{ variant.size }}</option>
+                                                                    {% for i in size %}
+                                                                        <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="text" name="image_id_{{ variant.id }}" value="{{ variant.image_id }}"></td>
+                                                            <td><input type="text" name="quantity_{{ variant.id }}" value="{{ variant.quantity }}"></td>
+                                                            <td><input type="text" name="vprice_{{ variant.id }}" value="{{ variant.price }}"></td>
+                                                            <td>{{ variant.image_tag|safe }}</td>
+                                                            <td>
+                                                                <a href="{% url 'remove_variant' variant.id %}">Remove</a>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-lg btn-primary">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+
+    
+
+
+{%endblock%}

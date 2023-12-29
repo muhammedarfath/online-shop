@@ -1,0 +1,239 @@
+
+{% extends "homebase.html" %}
+
+{% load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %}
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/bs-stepper.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/jquery.bootstrap-touchspin.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/toastr.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/bootstrap-extended.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/colors.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/components.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/dark-layout.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/bordered-layout.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/semi-dark-layout.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/horizontal-menu.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/app-ecommerce.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/form-pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/form-wizard.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/ext-component-toastr.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/form-number-input.css' %}">
+<style>
+    .empty-cart-message {
+        text-align: center;
+        padding: 50px;
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 20px 0;
+    }
+
+    .empty-cart-message h3 {
+        color: #333;
+    }
+
+    .empty-cart-message p {
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .empty-cart-message .btn-primary {
+        background-color: #fe4c50;
+        color: #fff;
+    }
+</style>
+
+<body class="horizontal-layout horizontal-menu navbar-floating footer-static" data-open="hover" data-menu="horizontal-menu" data-col="">
+    <div class="app-content content ecommerce-application">
+        <div class="content-wrapper">
+            <div class="content-header row"></div>
+            <div class="content-body">
+                <div class="bs-stepper checkout-tab-steps">
+                    <div class="bs-stepper-header">
+                        <div class="step" data-target="#step-cart">
+                            <button type="button" class="step-trigger">
+                                <span class="bs-stepper-box" style="background-color: #fe4c50;color:#fff;">
+                                    <i data-feather="shopping-cart" class="font-medium-3"></i>
+                                </span>
+                                <span class="bs-stepper-label">
+                                    <a href="order/orderproduct/" class="bs-stepper-title" style="color:#000">Cart</a>
+                                    <span class="bs-stepper-subtitle">Your Cart Items</span>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="line">
+                            <i data-feather="chevron-right" class="font-medium-2"></i>
+                        </div>
+                    </div>
+
+                    <div class="bs-stepper-content">
+                        <div id="step-cart" class="content">
+                            <div id="place-order" class="list-view product-checkout">
+                                <div class="checkout-items">
+                                    {% if cart_items %}
+                                    {% for rs in cart_items %}
+                                    <div class="card ecommerce-card">
+                                        <div class="item-img">
+                                            <a href="app-ecommerce-details.html">
+                                                <img  src="{{ rs.variant.image }}" alt="img-placeholder" />
+                                            </a>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="item-name">
+                                                <h6 class="mb-0">{{rs.variant.title}}</h6>
+                                                <span class="item-company">By  <span style="color:red">    {{rs.product.brand}}</span></span>
+                                                <div class="item-rating">
+                                                    {% if product_comments %}
+                                                    <ul class="star_rating">
+                                                        <i class="fa fa-star{% if product.averageReview < 1 %}-o empty{% endif %} yellow"></i>
+                                                        <i class="fa fa-star{% if product.averageReview < 2 %}-o empty{% endif %} yellow"></i>
+                                                        <i class="fa fa-star{% if product.averageReview < 3 %}-o empty{% endif %} yellow"></i>
+                                                        <i class="fa fa-star{% if product.averageReview < 4 %}-o empty{% endif %} yellow"></i>
+                                                        <i class="fa fa-star{% if product.averageReview < 5 %}-o empty{% endif %} yellow"></i>
+                                                    </ul>
+                                                    {% else %}
+                                                    <p>No reviews yet.</p>
+                                                {% endif %}
+                                                </div>
+                                            </div>
+                                            {% if rs.variant.quantity > 0 %}
+                                            <span>Availability: <span class="text-success font-weight-medium">In Stock</span></span>
+                                        {% else %}
+                                            <span>Availability: <span class="text-danger font-weight-medium">Out of Stock</span></span>
+                                        {% endif %}
+                                        <div class="item-quantity">
+                                            <span class="quantity-title">Qty:</span>
+                                            <div class="quantity" style="display: flex; align-items: center;">
+                                                {% csrf_token %}
+                                                <button class="decrement-button changequantity" data-action="decrement" data-product-id="{{ rs.variant.id }}" style="background: #fe4c50; border: none; color: white; cursor: pointer;width: 20px; border-radius: 6px;margin-left:27px;">
+                                                    <span>-</span>
+                                                </button>
+                                
+                                                <input id="product_qty{{rs.variant.id }}" name="product_count" type="number" class="quantity-input" value="{{ rs.quantity }}" min="1" readonly style="width: 50px; text-align: center; margin: 0 10px;">
+                                
+                                                <button id="yourButtonId" class="increment-button changequantity" data-action="increment" data-product-id="{{ rs.variant.id }}" style="background: #fe4c50; border: none; color: white; cursor: pointer; width: 20px; border-radius: 6px;margin-left">
+                                                    <span>+</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                            <span class="delivery-date text-muted"></span>
+                                            {% comment %} <span class="text-success">17% off 4 offers Available</span> {% endcomment %}
+                                        </div>
+                                        <div class="item-options text-center">
+                                            <div class="item-wrapper">
+                                                <div class="item-cost">
+                                                    <h4 id="singlePriceDisplay{{rs.variant.id}}"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{ rs.single_price }}</h4>
+                                                    <p class="card-text shipping">
+                                                        <span class="badge badge-pill badge-light-danger">No Free Shipping</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <a href="{% url 'order:delete_cart_item' rs.variant.id %}" type="button" class="btn btn-light mt-1 remove-wishlist">
+                                                <i data-feather="x" class="align-middle mr-25"></i>
+                                                <span>Remove</span>
+                                            </a>
+                                            {% comment %} <a href="{% url 'user:add_to_wishlist' rs.product.id %}" type="button" class="btn btn-danger btn-cart">
+                                                <i data-feather="heart" class="align-middle mr-25"></i>
+                                                <span class="text-truncate">Add to Wishlist</span>
+                                            </a> {% endcomment %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                        <div class="empty-cart-message">
+                                            <h3>Your cart is empty</h3>
+                                            <p>Add some items to your cart and start shopping!</p>
+                                            <a href="{% url 'category_products' %}" class="btn btn-danger">Shop Now</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="checkout-options">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="price-details">
+                                                <h6 class="price-title">Price Details</h6>
+                                                <ul class="list-unstyled">
+                                                    <li class="price-detail">
+                                                        <div class="detail-title">Total MRP</div>
+                                                        <div id="totalDisplay"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{total}}</div>
+                                                    </li>
+                                
+                                                    <li class="price-detail">
+                                                        <div class="detail-title">Estimated Tax</div>
+                                                        <div id="taxDisplay" class="detail-amt"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{tax}}</div>
+                                                    </li>
+                                
+                                                    <li class="price-detail">
+                                                        <div class="detail-title">Delivery Charges</div>
+                                                        <div class="detail-amt discount-amt text-success">{{shipping}}</div>
+                                                    </li>
+                                                </ul>
+                                                <hr />
+                                                <ul class="list-unstyled">
+                                                    <li class="price-detail">
+                                                        <div class="detail-title detail-total">Total</div>
+                                                        <div id="grandTotalDisplay" class="detail-amt font-weight-bolder">
+                                                            <strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{grand_total}}  
+                                                          </div>
+                                                    </li>
+                                                    <li class="price-detail">
+                                                        <div class="detail-title detail-total"></div>
+                                                        <div id="grandTotalDisplay" class="detail-amt font-weight-bolder" style="color: red; margin-top: 10px; margin-right: 0px;">
+                                                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                                            not included shipping charge
+                                                        </div>
+                                                        
+                                                    </li>
+                                                
+                                                </ul>
+                                                {% if cart_items %}
+                                                <a href="{% url 'order:orderproduct' %}" type="button" class="btn btn-danger btn-block btn-next place-order">Place Order</a>
+                                                {% else %}
+                                                <a href="{% url 'category_products' %}" type="button" class="btn btn-danger btn-block btn-next place-order">Shop</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Checkout Place Order Right ends -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step-address" class="content">
+                            <!-- Your existing address step HTML -->
+                        </div>
+
+                        <div id="step-payment" class="content">
+                            <!-- Your existing payment step HTML -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'order/js/vendors.min.js' %}"></script>
+    <script src="{% static 'order/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'order/js/bs-stepper.min.js' %}"></script>
+    <script src="{% static 'order/js/jquery.bootstrap-touchspin.js' %}"></script>
+    <script src="{% static 'order/js/app-menu.js' %}"></script>
+    <script src="{% static 'order/js/app.js' %}"></script>
+    <script src="{% static 'order/js/app-ecommerce-checkout.js' %}"></script>
+    <script src="{% static 'order/js/cart.js' %}"></script>
+    <script>
+        $(window).on('load', function() {
+            if (feather) {
+                feather.replace({
+                    width: 14,
+                    height: 14
+                });
+            }
+        })
+    </script>
+</body>
+
+{% include 'foot.html' %} 
+{% endblock %}

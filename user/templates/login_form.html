@@ -1,0 +1,65 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %} 
+<link rel="stylesheet" type="text/css" href="{% static 'styles/login.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+
+
+
+
+<div class="wrapper" style="background-image: url({% static 'images/pro24.jpeg' %});margin-top:7rem;">
+    <div class="inner" style="max-width: 1520px;">
+        <div class="image-holder">
+            <img src="{% static 'images/pro24.jpeg' %}" alt="">
+        </div>
+        <form action="" method='POST'>
+            {% csrf_token %}
+            <h3>Login Form</h3>
+
+            <div class="form-wrapper">
+                <input type="text" placeholder="Username" class="form-control"name="username">
+                <i class="zmdi zmdi-account"></i>
+            </div>
+            <div class="form-wrapper">
+                <input id="password"  type="password" placeholder="Password" class="form-control" name="password">
+                <i class="zmdi zmdi-lock"></i>
+                <i class="bi bi-eye-slash" id="togglePassword"></i>
+            </div>
+            <div class="links" style="  position: relative;width: 100%;display: flex;justify-content: space-between; "> <a></a> <a class="lin" style="  color:black;" href="/user/forgotpassword/">Forgot Password?</a> 
+
+            </div> 
+            <button id="myButton">Login
+                <i class="zmdi zmdi-arrow-right"></i>
+            </button>
+            <div class="links" style="position: relative; width: 70%; display: flex; justify-content: space-between;">
+                <a></a>
+                <a class="lin" style="color: black;" href="/user/signup/">Don't have an account? Sign up</a>
+            </div>
+
+        
+        </form>
+
+    </div>
+</div>
+<script>
+    const togglePassword = document.querySelector("#togglePassword");
+    const password = document.querySelector("#password");
+
+    togglePassword.addEventListener("click", function () {
+        // toggle the type attribute
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        
+        // toggle the icon
+        this.classList.toggle("bi-eye");
+    });
+
+</script>
+{% endblock %}
+{% block foot %}
+
+ {% include 'foot.html' %}  {% endblock %}

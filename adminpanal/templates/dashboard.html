@@ -1,0 +1,308 @@
+{% extends "adminbase.html" %}
+{% load static %}
+{% block title %} admin{% endblock %}
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/vendors/css/charts/apexcharts.css' %}">
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/vendors/css/extensions/toastr.min.css' %}"> {% endcomment %}
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/bootstrap-extended.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/colors.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/components.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/themes/dark-layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/themes/bordered-layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/themes/semi-dark-layout.css' %}">
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/core/menu/menu-types/horizontal-menu.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/pages/dashboard-ecommerce.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/plugins/charts/chart-apex.css' %}">
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'adminpanel/app-assets/css/plugins/extensions/ext-component-toastr.css' %}"> {% endcomment %}
+
+<body class="horizontal-layout horizontal-menu  navbar-floating footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="">
+
+
+    <!-- BEGIN: Main Menu-->
+
+    <!-- BEGIN: Content-->
+    <div class="app-content container" style="margin-top:6rem;">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+            </div>
+            <div class="content-body">
+                <!-- Dashboard Ecommerce Starts -->
+                <section id="dashboard-ecommerce">
+                    <div class="row match-height">
+                        <!-- Medal Card -->
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="card card-congratulation-medal">
+                                <div class="card-body">
+                             
+                                    <h3 class="text-dark invoice-logo" style="font-size: 4rem;">COLO<span style="color:#fe4c50;">SHOP</span></h3>
+
+                                    </h3>
+                                    <a href="/sales_report/" type="button" class="btn btn-danger">View Sales</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Medal Card -->
+
+                        <!-- Statistics Card -->
+                        <div class="col-xl-8 col-md-6 col-12">
+                            <div class="card card-statistics">
+                                <div class="card-header">
+                                    <h4 class="card-title">Statistics</h4>
+                                    <div class="d-flex align-items-center">
+                                        <p class="card-text font-small-2 mr-25 mb-0">Updated 1 month ago</p>
+                                    </div>
+                                </div>
+                                <div class="card-body statistics-body">
+                                    <div class="row">
+                                        <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                                            <div class="media">
+                                                <div class="avatar bg-light-primary mr-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="trending-up" class="avatar-icon"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="media-body my-auto">
+                                                    <h4 class="font-weight-bolder mb-0">{{sales_count}}</h4>
+                                                    <p class="card-text font-small-3 mb-0">Sales</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                                            <div class="media">
+                                                <div class="avatar bg-light-info mr-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="user" class="avatar-icon"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="media-body my-auto">
+                                                    <h4 class="font-weight-bolder mb-0">{{user_counts}}</h4>
+                                                    <p class="card-text font-small-3 mb-0">Customers</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-sm-0">
+                                            <div class="media">
+                                                <div class="avatar bg-light-danger mr-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="box" class="avatar-icon"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="media-body my-auto">
+                                                    <h4 class="font-weight-bolder mb-0">{{product_counts}}</h4>
+                                                    <p class="card-text font-small-3 mb-0">Products</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% comment %} <div class="col-xl-3 col-sm-6 col-12">
+                                            <div class="media">
+                                                <div class="avatar bg-light-success mr-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="media-body my-auto">
+                                                    <h4 class="font-weight-bolder mb-0">${{ line_data|safe }}</h4>
+                                                    <p class="card-text font-small-3 mb-0">Revenue</p>
+                                                </div>
+                                            </div>
+                                        </div> {% endcomment %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Statistics Card -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 grid-margin stretch-card">
+                          <div class="card">
+                            <div class="card-body">
+                              <p class="card-title">Payment Statistics</p>
+                              <p class="font-weight-500">The Most Used payment Methods to purchase items from our website </p>
+                              <div style="    height: 35rem;">
+                              <canvas id="PaymentChart"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 grid-margin stretch-card">
+                          <div class="card">
+                            <div class="card-body">
+                             <div class="d-flex justify-content-between">
+                              <p class="card-title">Order overview</p>
+                             
+                             </div>
+                              <p class="font-weight-500">The overview of cancelled orders, deliverd orders,and returned orders</p>
+                              <div>
+                                <canvas id="orders"></canvas>
+                              </div>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12 grid-margin stretch-card">
+                          <div class="card position-relative">
+                            <div class="card-body">
+                              <p class="card-title">Sales statistics</p>
+                              <p class="font-weight-500">Get the overview of sales by this chart  </p>
+                              <div>
+                              <canvas id="saleschart"></canvas>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                        
+
+                </section>
+                <!-- Dashboard Ecommerce ends -->
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+   
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('PaymentChart');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: {{ labels|safe }},
+                datasets: [{
+                    label: '# of Orders',
+                    data: {{ data|safe }},
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+      </script>
+      
+      <script>
+        const orders = document.getElementById('orders');
+        const statusMapping = {
+            1: "New",
+            2: "Accepted",
+            3: "Preparing",
+            4: "OnShipping",
+            5: "Completed",
+            6: "Canceled",
+            7: "Return",
+        };
+    
+        // Replace status numbers with names in the labels array
+        const statusLabels = {{ status_labels|safe }};
+        const labels = statusLabels.map(statusNumber => statusMapping[statusNumber]);
+    
+        new Chart(orders, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '# of Products',
+                    data: {{ status_data|safe }},
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+      <script>
+        const sales = document.getElementById('saleschart');
+        new Chart(sales, {
+          type: 'line',
+          data: {
+              labels: {{ line_labels|safe }},
+              datasets: [{
+                  label: 'Total Amount',
+                  data: {{ line_data|safe }},
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true,
+                      callback: function(value, index, values) {
+                          return '$' + value;  // Format y-axis values as currency
+                      }
+                  }
+              }
+          }
+      });
+      </script>
+      
+    <!-- BEGIN: Vendor JS-->
+    <script src="{% static 'adminpanel/app-assets/vendors/js/vendors.min.js' %}"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'adminpanel/app-assets/vendors/js/ui/jquery.sticky.js' %}"></script>
+    <script src="{% static 'adminpanel/app-assets/vendors/js/charts/apexcharts.min.js' %}"></script>
+    <script src="{% static 'adminpanel/app-assets/vendors/js/extensions/toastr.min.js' %}"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'adminpanel/app-assets/js/core/app-menu.js' %}"></script>
+    <script src="{% static 'adminpanel/app-assets/js/core/app.js' %}"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <!-- END: Page JS-->
+
+    <script>
+        $(window).on('load', function() {
+            if (feather) {
+                feather.replace({
+                    width: 14,
+                    height: 14
+                });
+            }
+        })
+    </script>
+</body>
+<!-- END: Body-->
+
+
+<!-- Mirrored from utoservice.moph.go.th/cv19-mophic/theme/html/ltr/horizontal-menu-template/dashboard-ecommerce.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 26 Nov 2023 05:19:56 GMT -->
+</html>
+
+
+{%endblock%}
+
+{% block foot %} {% include 'footer.html' %} {% endblock %}

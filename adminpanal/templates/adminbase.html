@@ -1,0 +1,47 @@
+{% load static %}
+
+
+
+
+<!DOCTYPE html>
+<html lang="zxx" class="js">
+<!-- Mirrored from dashlite.net/demo2/index-analytics.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Oct 2023 14:32:25 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Softnio">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description"
+        content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+    
+        {% block title %} {% endblock %} 
+
+
+    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="stylesheet" href="{% static 'adminpanel/css/dashlitee5ca.css' %}">
+    <link id="skin-default" rel="stylesheet" href="{% static 'adminpanel/css/themee5ca.css' %}">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91615293-4"></script> 
+ <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'UA-91615293-4');</script> 
+
+
+    {% block head %} {% endblock %}  
+</head>
+
+<body class="nk-body bg-lighter npc-default has-sidebar ">
+    <div class="nk-app-root">
+        <div class="nk-main ">
+     
+    {% block sidebar %} {% endblock %} 
+    <div class="nk-wrap "> 
+    {% include 'adminheader.html'%} 
+    {% block body %} {% endblock %} 
+    {% block foot %} {% endblock %}
+
+</div> 
+</div> 
+</body>
+<!-- Mirrored from dashlite.net/demo2/index-analytics.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Oct 2023 14:32:25 GMT -->
+
+</html>

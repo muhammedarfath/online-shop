@@ -1,0 +1,109 @@
+{% extends "adminbase.html" %}
+{% load static %}
+
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'user/css/chat.css' %}">
+    
+
+                <div id="frame" style="width: 190%;margin-top:8rem;position: relative;
+                left: -25rem;">
+                    
+                    <div class="content" >
+                        <div class="contact-profile"style="text-align:center;">
+                            <h3 class="text-dark invoice-logo">COLO<span style="color:#fe4c50">CHAT</span></h3>
+                 
+                        </div>
+                        <div class="messages">
+                            <ul id="chat-log">
+                                {% comment %} <li class="sent">
+                                    <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                                    <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
+                                </li>
+                                <li class="replies">
+                                    <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                                    <p>When you're backed against the wall, break the god damn thing down.</p>
+                                </li> {% endcomment %}
+
+                            </ul>
+                        </div>
+                        <div class="message-input">
+                            <div class="wrap">
+                            <input id="chat-message-input" type="text" placeholder="Write your message..." />
+                            <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+                            <button id="chat-message-submit" class="btn btn-dark" style="padding-left: 24px;
+                            width: 5rem;">send</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
+                <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+
+      {{ room_name|json_script:"room-name" }}
+      {{ user_name|json_script:"username" }}
+      <script src="{% static 'user/js/reconnecting-websocket.js'%}"></script>
+      <script src="{% static 'user/js/chat.js'%}"></script>
+      <script>
+          const roomName = JSON.parse(document.getElementById('room-name').textContent);
+          const username = JSON.parse(document.getElementById('username').textContent);
+  
+          const chatSocket = new ReconnectingWebSocket(
+              'ws://'
+              + window.location.host
+              + '/ws/user/'
+              + roomName
+              + '/'
+          );
+  
+          chatSocket.onmessage = function(e) {
+              var data = JSON.parse(e.data);
+              var message = data['message'];
+              var author = message['author'];
+
+              var msgListTag = document.createElement('li');
+              var imgTag = document.createElement('img');
+              var pTag = document.createElement('p');
+              pTag.textContent = message.content;
+              imgTag.src = 'http://emilcarlsson.se/assets/mikeross.png'
+
+
+              if (author === username){
+                msgListTag.className = 'sent';
+              }else{
+                msgListTag.className = 'replies';
+              }
+              msgListTag.appendChild(imgTag);
+              msgListTag.appendChild(pTag);
+
+              document.querySelector('#chat-log').appendChild(msgListTag);
+          };
+  
+          chatSocket.onclose = function(e) {
+              console.error('Chat socket closed unexpectedly');
+          };
+  
+          document.querySelector('#chat-message-input').focus();
+          document.querySelector('#chat-message-input').onkeyup = function(e) {
+              if (e.key === 'Enter') {  // enter, return
+                  document.querySelector('#chat-message-submit').click();
+              }
+          };
+  
+          document.querySelector('#chat-message-submit').onclick = function(e) {
+              const messageInputDom = document.querySelector('#chat-message-input');
+              const message = messageInputDom.value;
+              chatSocket.send(JSON.stringify({
+                  'message': message,
+                  'command':'new_messages',
+                  'from':username
+              }));
+              messageInputDom.value = '';
+          };
+      </script>
+  
+  
+      {% endblock %}
+      {% block foot %} {% include 'footer.html' %} {% endblock %}

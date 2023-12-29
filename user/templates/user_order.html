@@ -1,0 +1,65 @@
+   
+   {% extends "homebase.html" %}
+   {% load static %}
+   {% block title %} {{ setting.title }} {% endblock %}
+   
+   {% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+   
+   {% block body %} 
+
+
+<div class="container-fluid" style="margin-top:8rem;">
+    <div class="row">
+
+      {% include 'user_panel.html' %}
+
+
+        <div class="col-lg-8 pb-5">
+            <!-- Item-->
+            {% if orderproducts %}
+            {% for data in orderproducts %} 
+            <article class="card">
+                <header class="card-header"> My Orders </header>
+                <div class="card-body">
+                    <h6>Order ID:{{ data.order.order_number }}</h6>
+                    <article class="card">
+                        <div class="card-body row">
+                            <div class="col">
+                                <strong>Product:</strong> <br>
+                                <img style="width:70px" src="{{data.variant.image}}  ">
+                            </div>
+                            <div class="col"> <strong>Billing Name:</strong> <br> {{ data.order.full_name }}</div>
+                            <div class="col"> <strong>Phone:</strong> <br> {{ data.order.phone }} </div>
+                            <div class="col"> <strong>Order Total#:</strong> <br> {{ data.variant.price }} </div>
+                            <div class="col"> <strong>Date:</strong> <br> {{ data.order.create_at }} </div>
+                        </div>
+                    </article>
+                    <hr>
+                    {% if data.status != 'Canceled' %}
+                    <a href="{% url 'user:user_order_details' data.id %}" class="btn btn-success" data-abc="true"> <i class="fa fa-chevron-right"></i> Tracking-Details</a>
+                    {% else %}
+                    <a href="{% url 'user:user_order_details' data.id %}" class="btn btn-danger" data-abc="true"> <i class=""></i> Canceled item </a>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+            {% else %}
+            <div class="alert alert-info" role="alert">
+                No orders available at the moment.
+            </div>
+        {% endif %}
+            </div>
+            <!-- Item-->
+            
+
+        </div>
+    </div>
+</div>
+
+
+
+    {% endblock %}
+
+{% block foot %} {% include 'foot.html' %}  {% endblock %}
+
+

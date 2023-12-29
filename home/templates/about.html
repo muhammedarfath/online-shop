@@ -1,0 +1,24 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %} 
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div style="margin-top: 17rem;" class="col-md-6">
+                <h2>About Us</h2>
+                <p>{{ setting.aboutus }}</p>
+            </div>
+            <div class="col-md-6">
+                <!-- Add an image or other content related to your about section -->
+                <img style="width: 32rem;margin-top: 17rem;" src="{% static 'images/slider_1.jpg' %}" alt="About Us Image">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block foot %} {% include 'foot.html' %}  {% endblock %}

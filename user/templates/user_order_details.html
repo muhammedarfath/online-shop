@@ -1,0 +1,400 @@
+   
+   {% extends "homebase.html" %}
+   {% load static %}
+   {% block title %} {{ setting.title }} {% endblock %}
+   
+   {% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+   
+   {% block body %} 
+   <style>
+
+
+    .card {
+        margin-bottom: 3rem;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0.10rem;
+    }
+
+    .card-header:first-child {
+        border-radius: calc(0.37rem - 1px) calc(0.37rem - 1px) 0 0;
+    }
+
+    .card-header {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        background-color: #1e1e27;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        color: #fff;
+    }
+
+    .track {
+        position: relative;
+        background-color: #ddd;
+        height: 7px;
+        display: flex;
+        margin-bottom: 60px;
+        margin-top: 50px;
+    }
+
+    .track .step {
+        flex-grow: 1;
+        width: 25%;
+        margin-top: -18px;
+        text-align: center;
+        position: relative;
+    }
+
+    .track .step.active:before {
+        background: #FF5722;
+    }
+
+    .track .step::before {
+        height: 7px;
+        position: absolute;
+        content: "";
+        width: 100%;
+        left: 0;
+        top: 18px;
+    }
+
+    .track .step.active .icon {
+        background: #ee5435;
+        color: #fff;
+    }
+
+    .track .icon {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        position: relative;
+        border-radius: 100%;
+        background: #ddd;
+    }
+
+    .track .step.active .text {
+        font-weight: 400;
+        color: #000;
+    }
+
+    .track .text {
+        display: block;
+        margin-top: 7px;
+    }
+
+    .itemside {
+        position: relative;
+        display: flex;
+        width: 100%;
+    }
+
+    .itemside .aside {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .img-sm {
+        width: 80px;
+        height: 80px;
+        padding: 7px;
+    }
+
+    ul.row,
+    ul.row-sm {
+        list-style: none;
+        padding: 0;
+    }
+
+    .itemside .info {
+        padding-left: 15px;
+        padding-right: 7px;
+    }
+
+    .itemside .title {
+        display: block;
+        margin-bottom: 5px;
+        color: #212529;
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    .btn-warning {
+        color: #ffffff;
+        background-color: #ee5435;
+        border-color: #ee5435;
+        border-radius: 1px;
+    }
+
+    .btn-warning:hover {
+        color: #ffffff;
+        background-color: #ff2b00;
+        border-color: #ff2b00;
+        border-radius: 1px;
+    }
+</style>
+
+
+   <div class="container" style="margin-top:14rem;">
+
+    <article class="card">
+
+        <header class="card-header" style="background-color: #1e1e27;" > My Orders / Tracking </header>
+
+        <div class="card-body">
+            <h6>Order ID:{{ orders.order.order_number }}</h6>
+            <article class="card">
+                <div class="card-body row">
+                    <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2019 </div>
+                    <div class="col"> <strong>Shipping BY:</strong> <br> {{ colo.title }}, | <i class="fa fa-phone"></i> {{ colo.phone }}</div>
+                    <div class="col"> <strong>Status:</strong> <br> {{ orders.order.get_status_display }}
+                    </div>
+                    <div class="col"> <strong>Trasaction ID#:</strong> <br> {{ orders.order.payment.payment_id }} </div>
+
+                </div>
+                
+            </article>
+
+            <div class="track">
+            {% if orders.status != "Canceled"%}    
+                {% if orderstatus >= 1 %}
+                    <div class="step active">
+                        <span class="icon"> <i class="fa fa-check"></i> </span>
+                        <span class="text">Order confirmed</span>
+                    </div>
+                {% else %}
+                    <div class="step">
+                        <span class="icon"> <i class="fa fa-check"></i> </span>
+                        <span class="text">Order confirmed</span>
+                    </div>
+                {% endif %}
+            
+                {% if orderstatus >= 2 %}
+                    <div class="step active">
+                        <span class="icon"> <i class="fa fa-check"></i> </span>
+                        <span class="text">Picked by courier</span>
+                    </div>
+                {% else %}
+                    <div class="step">
+                        <span class="icon"> <i class="fa fa-check"></i> </span>
+                        <span class="text">Picked by courier</span>
+                    </div>
+                {% endif %}
+            
+                {% if orderstatus >= 3 %}
+                    <div class="step active">
+                        <span class="icon"> <i class="fa fa-cogs"></i> </span>
+                        <span class="text">Preparing</span>
+                    </div>
+                {% else %}
+                    <div class="step">
+                        <span class="icon"> <i class="fa fa-cogs"></i> </span>
+                        <span class="text">Preparing</span>
+                    </div>
+                {% endif %}
+            
+                {% if orderstatus >= 4 %}
+                    <div class="step active">
+                        <span class="icon"> <i class="fa fa-truck"></i> </span>
+                        <span class="text">On the way</span>
+                    </div>
+                {% else %}
+                    <div class="step">
+                        <span class="icon"> <i class="fa fa-truck"></i> </span>
+                        <span class="text">On the way</span>
+                    </div>
+                {% endif %}
+            
+                {% if orderstatus >= 5 %}
+                    <div class="step active">
+                        <span class="icon"> <i class="fa fa-box"></i> </span>
+                        <span class="text">Ready for pickup</span>
+                    </div>
+                {% else %}
+                    <div class="step">
+                        <span class="icon"> <i class="fa fa-check"></i> </span>
+                        <span class="text">Ready for pickup</span>
+                    </div>
+                {% endif %}
+            {% else %}
+            <div class="step active">
+                <span class="icon"> <i class="fa fa-check"></i> </span>
+                <span class="text">canceled</span>
+            </div>
+            {% endif %}
+            </div>
+            
+            
+            <hr style="margin-top: 7rem;">
+            <ul class="row">
+                <li class="col-md-4">
+                    <figure class="itemside mb-3">
+                        <div class="aside"><img src="{{ orders.variant.image }}" class="img-sm border"></div>
+                        <figcaption class="info align-self-center">
+                            <p class="title">{{orders.variant.title }} <br>{{ orders.variant.color.name}}<br> Quantity:{{ orders.quantity}} <br>{{ orders.variant.size.name}}</p> <span class="text-muted">{{orders.grand_total}}</span>
+                        </figcaption>
+                        
+                    </figure>
+            {% if orders.status == "Accepted"%}
+                    <a href="{% url 'user:Invoice' orders.id %}" class="btn btn-success" data-abc="true">
+                        <i class="fa fa-download"></i> Download Invoice
+                    </a>
+                </li>
+         
+            </ul>
+
+            <hr>
+            
+            <a href="/category_products/" class="btn btn-info" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to Shop</a>
+            {% if  time > seven %} 
+            <button class="btn btn-danger" disabled>
+                <i></i> Order Return (Expired)
+            </button>
+            {%else%}
+            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#returnModal">
+                <i></i> Order Return
+            </a>
+            {%endif%}
+            <div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="returnModalLabel">Order Return</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Add an input area and submit button for the modal body -->
+                    <form action="{% url 'user:order_return' orders.id %}" method="post">
+                        {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="returnReason">Reason for Return:</label>
+                                    <input name="return_reason" type="text" class="form-control" id="returnReason" placeholder="Enter reason">
+                                </div>
+                                <p>Note: You can return the order within 7 days.</p>
+                               
+                          
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Submit Return</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+            {%elif orders.status == "Return"%}
+            {% if orders.order.status != 7 %}
+            <p>Note:<span style="color:green">  Your return request is processing.</span></p>
+            {%else%}
+            <p>Note: <span style="color:green">Your return request has been submitted; your refund will be processed shortly.check your mail</span></p>
+            {%endif%}
+            <a href="/category_products/" class="btn btn-info" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to Shop</a>
+            {%else%}
+                </li>
+         
+            </ul>
+
+            <hr>
+            
+            <a href="/category_products/" class="btn btn-info" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to Shop</a>
+            {% if orders.status != "Canceled"%}  
+            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">
+                <i class=""></i> Cancel Order
+            </a>
+            {% endif %}
+          {% endif %}  
+            <!-- Add a modal with an ID matching the data-target attribute -->
+<!-- Add a modal with an ID matching the data-target attribute -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 300px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Cancel Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel your order? This action cannot be undone.</p>
+                
+                <!-- Add a reason input box -->
+                <form action="{% url 'user:cancel_order' orders.id %}" method="post">
+
+                    {% csrf_token %}
+                <div class="form-group">
+                    <label for="cancellationReason">Cancellation Reason:</label>
+                    <textarea class="form-control" name="cancel_reason" id="cancellationReason" rows="3" placeholder="Enter your reason" required></textarea>
+                </div>
+            
+            </div>
+            <div class="modal-footer">
+                <button type="" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!-- Add your logic to cancel the order when the user clicks "Cancel Order" -->
+                
+                <a href="" class="btn btn-danger" onclick="cancelOrder()">Submit</a>
+                
+
+
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function cancelOrder() {
+        // Retrieve the reason entered by the user
+        var reason = document.getElementById('cancellationReason').value;
+        
+        // AJAX request to send the cancellation reason to the server
+        $.ajax({
+            type: 'POST',
+            url: '{% url "user:cancel_order" orders.id %}',  // Update with the correct URL name
+            data: {
+                'cancel_reason': reason,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',  // Include the CSRF token
+            },
+            success: function(data) {
+                // Handle the success response, if needed
+                console.log('Order canceled successfully');
+            },
+            error: function(error) {
+                // Handle the error response, if needed
+                console.error('Error canceling order', error);
+            }
+        });
+    
+        // Close the modal after processing the cancellation
+        $('#cancelModal').modal('hide');
+    }
+    
+</script>
+
+
+    </article>
+
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+    {% endblock %}
+
+{% block foot %} {% include 'foot.html' %}  {% endblock %}
+
+

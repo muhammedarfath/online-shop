@@ -1,0 +1,128 @@
+
+{% load static %}
+<style>
+        .nk-menu-link:hover {
+            color:#000
+        }
+    
+        .nk-menu-link:hover .nk-menu-icon em {
+            color:#000
+        }
+</style>
+<div class="nk-sidebar nk-sidebar-fixed is-light " data-content="sidebarMenu">
+    <div class="nk-sidebar-element nk-sidebar-head">
+        <div class="nk-sidebar-brand"><a href="index.html" class="logo-link nk-sidebar-logo">
+                <h3 class="text-dark invoice-logo">COLO<span style="color:#fe4c50">SHOP</span></h3>
+        </a></div>
+        <div class="nk-menu-trigger me-n2"><a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none"
+                data-target="sidebarMenu"><em class="icon ni ni-arrow-left"></em></a><a href="#"
+                class="nk-nav-compact nk-quick-nav-icon d-none d-xl-inline-flex"
+                data-target="sidebarMenu"><em class="icon ni ni-menu"></em></a></div>
+    </div>
+    <div class="nk-sidebar-element">
+        <div class="nk-sidebar-content">
+            <div class="nk-sidebar-menu" data-simplebar>
+                <ul class="nk-menu">
+        
+                        <li class="nk-menu-heading">
+                                <h6 class="overline-title text-primary-alt" style="color: #000;">Dashboards</h6>
+                            </li>
+                            
+                            <li class="nk-menu-item">
+                                <a href="/dashboard/" class="nk-menu-link">
+                                    <span class="nk-menu-icon">
+                                        <em class="icon ni ni-growth-fill" style="color:#000"></em>
+                                    </span>
+                                    <span class="nk-menu-text" style="color:#000">Analytics</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="/sales_report/" class="nk-menu-link">
+                                    <span class="nk-menu-icon">
+                                        <em class="icon ni ni-user-list-fill" style="color:#000"></em>
+                                    </span>
+                                    <span class="nk-menu-text" style="color:#000">Sales Report</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-heading">
+                                <h6 class="overline-title text-primary-alt" style="color: #000;">Applications</h6>
+                            </li>
+                            
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-icon">
+                                        <em class="icon ni ni-users-fill" style="color:#000"></em>
+                                    </span>
+                                    <span class="nk-menu-text" style="color:#000">User Manage</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="/userdetails/" class="nk-menu-link">
+                                            <span class="nk-menu-text" >User List</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon" style="color:#000" ><em class="icon ni ni-cc-alt2-fill"></em></span><span
+                                class="nk-menu-text" style="color:#000">Orders</span></a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item"><a href="/order_list/"
+                                    class="nk-menu-link"><span class="nk-menu-text" >Order List
+                                        </span></a></li>
+                           <li class="nk-menu-item"><a href="/cancel_list/"
+                                    class="nk-menu-link"><span class="nk-menu-text">Cancel Orders
+                                        </span></a></li>
+                            <li class="nk-menu-item"><a href="/return_list/"
+                                class="nk-menu-link"><span class="nk-menu-text">Return Orders
+                                    </span></a></li>            
+
+                        </ul>
+                    </li>
+                   <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon" style="color:#000"><em class="icon ni ni-grid-alt-fill"></em></span><span
+                                class="nk-menu-text" style="color:#000">Applications</span></a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item"><a href="/admincomments/" class="nk-menu-link"><span
+                                        class="nk-menu-text">Comments</span></a></li>
+                            <li class="nk-menu-item"><a href="apps-inbox.html" class="nk-menu-link"><span
+                                        class="nk-menu-text">Messages</span></a></li>
+                    
+                            <li class="nk-menu-item"><a href="/user/adminchat/" class="nk-menu-link"><span
+                                        class="nk-menu-text">Chats / Messenger</span></a></li>
+                                        <script>
+                                            document.getElementById("myButton").addEventListener("click", function() {
+                                                // Make an AJAX request to your Django server
+                                                var xhr = new XMLHttpRequest();
+                                                xhr.open("GET", "/user/adminchat/", true);
+                                                xhr.onreadystatechange = function() {
+                                                    if (xhr.readyState == 4 && xhr.status == 200) {
+                                                        // Handle the response if needed
+                                                        console.log(xhr.responseText);
+                                                    }
+                                                };
+                                                xhr.send();
+                                            });
+                                        </script>
+                        </ul>
+                    </li>
+
+                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon" style="color:#000"><em class="icon ni ni-card-view"></em></span><span
+                                class="nk-menu-text" style="color:#000">Products</span></a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item"><a href="/productlist/" class="nk-menu-link"><span
+                                        class="nk-menu-text">Product List</span></a></li>
+
+                        </ul>
+                    </li>
+                   <li class="nk-menu-item"><a href="{% url 'admincoupon' %}" class="nk-menu-link"><span
+                                class="nk-menu-icon"style="color:#000"><em class="icon ni ni-view-col"></em></span><span
+                                class="nk-menu-text" style="color:#000" >Coupon Table</span></a></li>
+              
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

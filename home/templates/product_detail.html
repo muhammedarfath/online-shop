@@ -1,0 +1,580 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block title %} {{ product.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %} 
+<style>
+/* Base styles for the form */
+.add_review {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f7f7f7;
+  border-radius: 8px;
+}
+.yellow {
+    color: #fac451;
+}
+
+.add_review h1 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.add_review input[type="text"],
+.add_review textarea {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.user_star_rating {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.user_star_rating input[type="radio"] {
+  display: none;
+}
+
+.user_star_rating label {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.user_star_rating label:before {
+  content: '\2605';
+  margin: 5px;
+  color: #ddd;
+}
+
+.user_star_rating input[type="radio"]:checked~label:before {
+  color: #FFD700; /* Change this color to the desired active star color */
+}
+
+.text-left.text-sm-right {
+  text-align: right;
+  margin-top: 15px;
+}
+
+.red_button {
+  background-color: #FF0000; /* Change this color to the desired button background color */
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.red_button:hover {
+  background-color: #CC0000; /* Change this color to the desired button hover color */
+}
+.size-option input[type="radio"] {
+    display: none; /* Hide the default radio buttons */
+}
+
+.size-option label {
+    display: inline-block;
+    width: 62px;
+    height: 34px;
+    border: 1px solid #000;
+    margin-right: 12px;
+    cursor: pointer;
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+}
+.size-option input[type="radio"]:checked + label {
+    border: 2px solid #ff2121;
+    color: #000;
+
+}
+.color-label.active {
+    border: 2px solid #ff2121; /* You can adjust the border style to indicate the selected image */
+}
+
+</style>
+
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>{{product_category.title}}</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Single Product</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-7">
+            <!-- Product Images -->
+            <div class="single_product_pics">
+                <div class="row">
+                    <div class="col-lg-3 thumbnails_col order-lg-1 order-2">
+                        <!-- Thumbnails -->
+                        <div class="single_product_thumbnails">
+                            <ul>
+                                {% for i in image_types %}
+                                {% if forloop.first %}
+                                    <li class="active">
+                                        <img class="img-fluid" style="height:135px" src="{{ i.image.url }}" alt="" data-image="{{ i.image.url }}">
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <img  class="img-fluid" src="{{ i.image.url }}" style="height:135px" alt="" data-image="{{ i.image.url }}">
+                                    </li>
+                                {% endif %}
+                            
+                                                                {% comment %} {% else %}
+                                <li class="active"><img style="height:135px" src="{{ product.image.url }}" alt="" data-image={{ product.image.url }}></li>
+                                <li><img src="images/single_2_thumb.jpg" alt="" data-image="images/single_2.jpg"></li>
+                                <li><img src="images/single_3_thumb.jpg" alt="" data-image="images/single_3.jpg"></li> {% endcomment %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 image_col order-lg-2 order-1">
+                        <!-- Main Product Image -->
+                        <div class="single_product_image">
+                        
+                            {% if variant.image_id > 0 %}
+               
+                            <div class="single_product_image_background" style="background-image:url({{ variant.image }})"></div>
+                           
+                            {% else %}
+                            <div class="single_product_image_background" style="background-image:url({{ product.image.url }})"></div>
+                             {% endif %}
+                             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <!-- Product Details -->
+            <div class="product_details">
+                <div class="product_details_title">
+                    <h2>{{ variant.title }}</h2>
+                    <p>{{ product.description }}</p>
+                </div>
+                <!-- Price and Rating -->
+                <div class="free_delivery d-flex flex-row align-items-center justify-content-center">
+                    <span class="ti-truck"></span><span>free delivery</span>
+                </div>
+                {% comment %} <div class="original_price">$629.99</div>
+                <div class="product_price">${{ product.price }}</div> {% endcomment %}
+                <a href=""><div class="product_price">Ratings & Reviews</div></a>
+                <div>
+                    {% if comments %}
+                    <ul class="star_rating">
+                        <i class="fa fa-star{% if product.averageReview < 1 %}-o empty{% endif %} yellow"></i>
+                        <i class="fa fa-star{% if product.averageReview < 2 %}-o empty{% endif %} yellow"></i>
+                        <i class="fa fa-star{% if product.averageReview < 3 %}-o empty{% endif %} yellow"></i>
+                        <i class="fa fa-star{% if product.averageReview < 4 %}-o empty{% endif %} yellow"></i>
+                        <i class="fa fa-star{% if product.averageReview < 5 %}-o empty{% endif %} yellow"></i>
+                    </ul>
+                {% else %}
+                    <p>No reviews yet.</p>
+                {% endif %}
+                </div>
+            
+                
+                
+
+                {% if product.variant == 'Size-Color' %}
+                    <div class="product-options">
+                        <div class="size-option" style="display: inline-block;">
+                            <form method="POST" id="post-form">
+                                <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
+                                <span class="text-uppercase">Size :</span>
+                                {% csrf_token %}
+                                {% for rs in unique_sizes %}
+                                    <input type="radio" name="size" id="size{{ rs.size_id }}" value="{{ rs.size_id }}" {% if variant.size_id == rs.size_id %} checked {% endif %}>
+                                    <label for="size{{ rs.size_id }}">{{ rs.size.code }}</label>
+                                {% endfor %}
+                            </form>
+                        </div>
+
+                        <form method="post" action="?q=selectvariant" id="post-color">
+                            {% csrf_token %}
+                            <div id="appendHere">
+                                <input type="hidden" name="size" id="selected_size" value="{{ size_id }}">
+                                <ul class="color-option" style="list-style-type: none; padding: 0; margin: 0;">
+                                    {% for rs in colors %}
+                                        <li style="display: inline-block; margin-right: 10px;">
+                                            <input type="radio" {% if variant.id == rs.id %} checked {% endif %} name="variantid" id="variantid{{ rs.id }}" value="{{ rs.id }}" style="display: none;">
+                                            <label for="variantid{{ rs.id }}" class="color-label {% if variant.id == rs.id %}active{% endif %}" onclick="submitForm('{{ rs.id }}')">
+                                                <img src="{{ rs.image }}" style="height: 70px">
+                                            </label>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                
+                {% elif product.variant == 'Size' %}
+                <form method="POST" id="post-form">
+                    <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
+                    <span class="text-uppercase">Size :</span>
+                    {% csrf_token %}
+                    <select name="size" id="size" style="background-color: #f2f2f2; color: #333; border: 1px solid #ccc; padding: 5px; margin: 1rem;">
+                        {% for rs in unique_sizes %}
+                            <option {% if variant.size_id == rs.size_id %} selected {% endif %} value="{{ rs.size_id }}">{{ rs.size.name }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                </form>
+                <br><br>
+
+            {% elif product.variant == 'Color' %}
+                <form method="post" action="?q=selectvariant" id="post-color">
+                    {% csrf_token %}
+                    <div id="appendHere">
+                        <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                        <ul class="color-option" >
+                            <li><span class="text-uppercase">Color:</span></li>
+                            {% for rs in colors %}
+                                <input type="radio"  {% if variant.id == rs.id %} checked {% endif %} name="variantid" id="variantid" value="{{ rs.id }}" onchange="this.form.submit();">
+                                <li  {% if variant.id == rs.id %} class="active" {% endif %}>
+                                    <a style="background-color:{{ rs.color.code }}; color: #D9D9D9; text-shadow: 1px 1px #000000; width: 90px">
+                                         {{ rs.color }}
+                                    </a>
+                                    <img src="{{ rs.image }}" style="height: 70px">
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </form>
+                </div>
+                
+                {% endif %}
+                
+                <!-- Quantity Selector and Add to Cart -->
+                {% if  product.variant != 'None'   %}
+                <form action="/order/addtoshopcart/{{ product.id }}" method="post"  id="addchart-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="variantid" id="variantid" value="{{ variant.id }}">
+                    <div id="SelectedProduct" style="margin-top: 3rem;">
+                      
+                        <h3 class="product-price"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{ variant.price}}</h3>
+                        <div class="qty-input">
+                            <a href="{% url 'user:add_to_wishlist' product.id %}" type="button" class="btn btn-danger btn-cart">
+                                <i data-feather="heart" class="align-middle mr-25"></i>
+
+                                <span class="text-truncate">Add to Wishlist</span>
+                            </a>
+                            {% if variant.quantity < 1  %}
+                                <h5 style="color: red; font-style: italic;">Out Of Stock</h5>
+                            {% else %}
+                                <button type="submit" class="btn btn-danger primary-btn add-to-cart">
+                                    <i class="fa fa-shopping-cart"></i> Add to Cart
+                                </button>
+                            {% endif %}
+                        </div>
+                        
+                    </div>
+                </form>
+            {% else %}
+            <form action="/order/addtoshopcart/{{ product.id }}" method="post"  id="addchart-form">
+                {% csrf_token %}
+                <div id="SelectedProduct">
+                    <p><strong>Availability:</strong> {% if product.amount > 0  %} In Stock {% else %} Out of Stock {% endif %}</p>
+                    <h3 class="product-price"></h3>
+                    <div class="qty-input">
+                        <span class="text-uppercase">QTY: </span>
+                        <input class="input" name="quantity" type="number" value="1" min="1" max="{{ product.amount }}">
+                        <button type="submit" {% if product.amount < 1  %} disabled {% endif %} class="primary-btn add-to-cart">
+                            <i class="fa fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        {% endif %}
+            </div>
+        </div>
+    </div>
+    
+
+<!-- Tabs -->
+
+<div class="tabs_section_container">
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="tabs_container">
+                    <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
+                        <li class="tab active" data-active-tab="tab_1"><span>Description</span></li>
+                        <li class="tab" data-active-tab="tab_2"><span>Additional Information</span></li>
+                        <li class="tab" data-active-tab="tab_3"><span>Reviews ({{ comments.count }})</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+
+                <!-- Tab Description -->
+
+                <div id="tab_1" class="tab_container active">
+                    <div class="row">
+                        <div class="col-lg-5 desc_col">
+                            <div class="tab_title">
+                                <h4>Description</h4>
+                            </div>
+                            <div class="tab_text_block">
+                                <h2>Pocket cotton sweatshirt</h2>
+                                <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+                            </div>
+                            <div class="tab_image">
+                                <img src="{{variant.image}}" alt="">
+                            </div>
+                            <div class="tab_text_block">
+                                <h2>Pocket cotton sweatshirt</h2>
+                                <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 offset-lg-2 desc_col">
+                            <div class="tab_image">
+                                <img src="{{variant.image}}" alt="">
+                            </div>
+                            <div class="tab_text_block">
+                                <h2>Pocket cotton sweatshirt</h2>
+                                <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+                            </div>
+                            <div class="tab_image desc_last">
+                                <img src="{{variant.image}}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Additional Info -->
+
+                <div id="tab_2" class="tab_container">
+                    <div class="row">
+                        <div class="col additional_info_col">
+                            <div class="tab_title additional_info_title">
+                                <h4>Additional Information</h4>
+                            </div>
+                            <p>Details:<span>{{ product.detail |safe }}</span></p>
+                            <p><strong>Availability:</strong> {% if variant.quantity > 0  %} In Stock {% else %} Out of Stock {% endif %}</p>
+                            <p><strong>Selected :</strong> Size : {{ variant.size }}  Color : {{ variant.color }} </p>
+                            {% comment %} <p>SIZE:<span>L,M,XL</span></p> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Reviews -->
+
+                <div id="tab_3" class="tab_container">
+                    <div class="row">
+
+                        <!-- User Reviews -->
+
+                        <div class="col-lg-6 reviews_col">
+                            <div class="tab_title reviews_title">
+                                <h4>Reviews (2)</h4>
+                            </div>
+
+                            <!-- User Review -->
+                            {% for comment in comments %}
+                            <div class="user_review_container d-flex flex-column flex-sm-row">
+                                <div class="user">
+                                    <div class="user_pic"></div>
+                                    <div class="user_rating">
+                                        <ul class="star_rating">
+                                            <i class="fa fa-star{% if comment.rate < 1 %}-o empty{% endif %} yellow"></i>
+                                            <i class="fa fa-star{% if comment.rate < 2 %}-o empty{% endif %} yellow"></i>
+                                            <i class="fa fa-star{% if comment.rate < 3 %}-o empty{% endif %} yellow"></i>
+                                            <i class="fa fa-star{% if comment.rate < 4 %}-o empty{% endif %} yellow"></i>
+                                            <i class="fa fa-star{% if comment.rate < 5 %}-o empty{% endif %} yellow"></i>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="review">
+                                    <div class="review_date">{{comment.create_at }}</div>
+                                    <div class="user_name">{{comment.user}}</div>
+                                    <p>{{ comment.comment}}</p>
+                                </div>
+                            </div>
+                         {% endfor %}
+                        </div>
+
+                        <!-- Add Review -->
+
+                        <div class="col-lg-6 add_review_col">
+                        <div class="add_review">
+                            <form id="review_form" action="/product/addcomment/{{ product.id }}" method="post">
+                                {% csrf_token %}
+                                <div>
+                                    <h1>Add Review</h1>
+                                    <input type="text" name="subject" class="form_input input_name" placeholder="Subject" />
+                                    <input type="text" name="comment" class="form_input input_email" placeholder="Your comment" />
+                                </div>
+                                <div>
+                                    <h1>Your Rating:</h1>
+                                    <div class="user_star_rating" id="rating">
+                                    <input type="radio" id="star5" name="rate" value="5" /><label for="star5" title="5 stars"></label>
+                                    <input type="radio" id="star4" name="rate" value="4" /><label for="star4" title="4 stars"></label>
+                                    <input type="radio" id="star3" name="rate" value="3" /><label for="star3" title="3 stars"></label>
+                                    <input type="radio" id="star2" name="rate" value="2" /><label for="star2" title="2 stars"></label>
+                                    <input type="radio" id="star1" name="rate" value="1" /><label for="star1" title="1 star"></label>
+                                    </div>
+                                </div>
+                                <div class="text-left text-sm-right">
+                                    {% if user.id is not None %}
+                                    {% if orderproduct%}
+                                        <button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">Submit</button>
+                                        {% else %}
+                                        You must purchase this product to post a review.
+                                        {% endif %}
+                                    {% else %}
+                                        You must be logged in to post a review
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                        
+                        
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Benefit -->
+
+<div class="benefit">
+    <div class="container">
+        <div class="row benefit_row">
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>free shipping</h6>
+                        <p>Suffered Alteration in Some Form</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>cach on delivery</h6>
+                        <p>The Internet Tend To Repeat</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>45 days return</h6>
+                        <p>Making it Look Like Readable</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>opening all week</h6>
+                        <p>8AM - 09PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block foot %} 
+<script>
+    function submitForm(variantId) {
+        // Remove the 'active' class from all labels
+        var labels = document.querySelectorAll('.color-label');
+        labels.forEach(function(label) {
+            label.classList.remove('active');
+        });
+
+        // Add the 'active' class to the clicked label
+        var activeLabel = document.querySelector('[for="variantid' + variantId + '"]');
+        activeLabel.classList.add('active');
+
+        // Set the corresponding radio button to checked
+        document.getElementById('variantid' + variantId).checked = true;
+
+        // Submit the form
+        document.getElementById('post-color').submit();
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).on('change', 'input[name="size"]', function(e){
+        e.preventDefault();
+        var selectedSize = $('input[name="size"]:checked').val();
+        $('#selected_size').val(selectedSize);
+        $.ajax({
+            type:'POST',
+            url:'{% url "ajaxcolor" %}',
+            data:{
+                productid:$('#productid').val(),
+                size:selectedSize,
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            dataType: 'json',  // Assuming the response is in JSON format
+            success: function (data) {
+                console.log(data,"success");
+                $('#appendHere').html(data.rendered_table);
+            },
+            error: function (data) {
+                alert("Got an error dude " + data);
+            }
+        });
+    });
+</script>
+<script>
+    $(window).on('load', function() {
+        if (feather) {
+            console.log("Feather is available.");
+            feather.replace({
+                width: 14,
+                height: 14
+            });
+        } else {
+            console.log("Feather is not available.");
+        }
+    })
+    
+</script> 
+{% include 'foot.html' %}  {% endblock %}

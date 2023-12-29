@@ -1,0 +1,296 @@
+{% extends "adminbase.html" %}
+
+{% block title %} admin{% endblock %}
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+
+<div class="nk-content ">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head nk-block-head-sm">
+                    <div class="nk-block-between">
+                        <div class="nk-block-head-content">
+                            <h3 class="nk-block-title page-title">Products</h3>
+                        </div>
+                        <div class="nk-block-head-content">
+                            <div class="toggle-wrap nk-block-tools-toggle"><a href="#"
+                                    class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                    data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+                                <div class="toggle-expand-content" data-content="pageMenu">
+                                    <ul class="nk-block-tools g-3">
+                                        <li>
+                                            <div class="form-control-wrap">
+                                                <div class="form-icon form-icon-right"><em
+                                                        class="icon ni ni-search"></em></div><input
+                                                    type="text" class="form-control" id="default-04"
+                                                    placeholder="Quick search">
+                                            </div>
+                                        </li>
+                   
+                                        <li class="nk-block-tools-opt"><a href="#"
+                                                data-target="addProduct"
+                                                class="toggle btn btn-icon btn-danger d-md-none"><em
+                                                    class="icon ni ni-plus"></em></a><a href="#"
+                                                data-target="addProduct"
+                                                class="toggle btn btn-danger d-none d-md-inline-flex"><em
+                                                    class="icon ni ni-plus"></em><span>Add
+                                                    Product</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nk-block">
+                    <div class="card">
+                        <div class="card-inner-group">
+                            <div class="card-inner p-0">
+                                <div class="nk-tb-list">
+                                    <div class="nk-tb-item nk-tb-head">
+                                        <div class="nk-tb-col nk-tb-col-check">
+                                            <div
+                                                class="custom-control custom-control-sm custom-checkbox notext">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="pid"><label class="custom-control-label"
+                                                    for="pid"></label></div>
+                                        </div>
+                                        <div class="nk-tb-col tb-col-sm"><span>Name</span></div>
+                                        <div class="nk-tb-col"><span>ID</span></div>
+                                        <div class="nk-tb-col"><span>Price</span></div>
+                                        
+                                        <div class="nk-tb-col tb-col-md"><span>Category</span></div>
+                                       
+                                        <div class="nk-tb-col nk-tb-col-tools">
+                                            <ul class="nk-tb-actions gx-1 my-n1">
+                                                <li class="me-n1">
+                                                    <div class="dropdown"><a href="#"
+                                                            class="dropdown-toggle btn btn-icon btn-trigger"
+                                                            data-bs-toggle="dropdown"><em
+                                                                class="icon ni ni-more-h"></em></a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <ul class="link-list-opt no-bdr">
+                                                                <li><a href="#"><em
+                                                                            class="icon ni ni-edit"></em><span>Edit
+                                                                            Selected</span></a></li>
+                                                                <li><a href="#"><em
+                                                                            class="icon ni ni-trash"></em><span>Remove
+                                                                            Selected</span></a></li>
+                                                                <li><a href="#"><em
+                                                                            class="icon ni ni-bar-c"></em><span>Update
+                                                                            Stock</span></a></li>
+                                                                <li><a href="#"><em
+                                                                            class="icon ni ni-invest"></em><span>Update
+                                                                            Price</span></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    {% for i in product%}
+                                 
+                                    
+                                    <div class="nk-tb-item">
+                                        <div class="nk-tb-col nk-tb-col-check">
+                                            <div
+                                                class="custom-control custom-control-sm custom-checkbox notext">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="pid1"><label class="custom-control-label"
+                                                    for="pid1"></label></div>
+                                        </div>
+                                        <div class="nk-tb-col tb-col-sm"><span class="tb-product">
+                                            {% if i.image %}
+                                            <img src="{{i.image.url}} " alt=""
+                                                    class="thumb">{% endif %}<span class="title">{{i.title}} 
+                                                   </span></span></div>
+                                        <div class="nk-tb-col"><span class="tb-sub">{{i.id}}</span></div>
+                                        <div class="nk-tb-col"><span class="tb-lead"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{i.minamount}}</span>
+                                        </div>
+                                       
+                                        <div class="nk-tb-col tb-col-md"><span class="tb-sub">{{i.category}} 
+                                                </span></div>
+                                       
+                                        
+                                        <div class="nk-tb-col nk-tb-col-tools">
+                                            <ul class="nk-tb-actions gx-1 my-n1">
+                                                <li class="me-n1">
+                                                    <div class="dropdown"><a href="#"
+                                                            class="dropdown-toggle btn btn-icon btn-trigger"
+                                                            data-bs-toggle="dropdown"><em
+                                                                class="icon ni ni-more-h"></em></a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <ul class="link-list-opt no-bdr">
+                                                                <li><a href="{% url 'edit_product' i.id %}"><em
+                                                                            class="icon ni ni-edit"></em><span>Edit
+                                                                            Product</span></a></li>
+                                    
+                                                                <li><a href="{% url 'add_variant' i.id %}"><em
+                                                                            class="icon ni ni-activity-round"></em><span>Add Variants
+                                                                            </span></a></li>
+                                                                            {% if i.status == 'True' %}
+                                                                            <li>
+                                                                                <a href="{% url 'soft_delete_product' i.id %}">
+                                                                                    <em class="icon ni ni-archive"></em>
+                                                                                    <span>Archive Product</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        {% else %}
+                                                                            <li>
+                                                                                <a href="{% url 'undelete_product' i.id %}">
+                                                                                    <em class="icon ni ni-refresh"></em>
+                                                                                    <span>Restore Product</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        {% endif %}
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {%endfor%}
+                                   
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="nk-add-product toggle-slide toggle-slide-right" data-content="addProduct"
+                    data-toggle-screen="any" data-toggle-overlay="true" data-toggle-body="true"
+                    data-simplebar>
+                    <div class="nk-block-head">
+                        <div class="nk-block-head-content">
+                            <h5 class="nk-block-title">New Product</h5>
+                            <div class="nk-block-des">
+                                <p>Add information and add new product.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="{% url 'add_product'%}" method='post' enctype="multipart/form-data">
+                        {% csrf_token %}
+                    <div class="nk-block">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="form-group"><label class="form-label"
+                                        for="product-title">Product Title</label>
+                                    <div class="form-control-wrap"><input type="text"
+                                           name='name' class="form-control" id="product-title"></div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group"><label class="form-label"
+                                        for="product-title">Keyword</label>
+                                    <div class="form-control-wrap"><input type="text"
+                                           name='keyword' class="form-control" id="product-title"></div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group"><label class="form-label"
+                                        for="product-title">Product Description</label>
+                                    <div class="form-control-wrap"><textarea type="text"
+                                            name="description" class="form-control" id="product-title"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group"><label class="form-label"
+                                        for="product-title">Product Details</label>
+                                    <div class="form-control-wrap"><textarea type="text"
+                                            name="details" class="form-control" id="product-title"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group"><label class="form-label"
+                                        for="regular-price">Regular Price</label>
+                                    <div class="form-control-wrap"><input type="number"
+                                            name="price" class="form-control" id="regular-price"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group"><label class="form-label" for="sale-price">Sale
+                                        Price</label>
+                                    <div class="form-control-wrap"><input type="number"
+                                        name="saleprice" class="form-control" id="sale-price"></div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group"><label class="form-label"
+                                        for="category">Category</label>
+                                        <select style="padding: 0;" id="category" name="category" class="form-control validate">
+                                            <option value="" disabled selected>Select Category</option>
+                                            {% for category in categories %}
+                                                <option value="{{ category.title }}">{{ category.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group"><label class="form-label"
+                                        for="category">Brand</label>
+                                        <select style="padding: 0;" id="category" name="brand" class="form-control validate">
+                                            <option value="" disabled selected>Select Brand</option>
+                                            {% for br in brand %}
+                                                <option value="{{ br.name }}">{{ br.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="status">Status</label>
+                                    <div class="form-control-wrap">
+                                        <select class="form-control" id="status" name="status">
+                                            <option value="" disabled selected>Select Status</option>
+                                            {% for status_choice in status_choices %}
+                                                <option value="{{ status_choice.0 }}">{{ status_choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="variant">Variant Type</label>
+                                    <div class="form-control-wrap">
+                                        <select class="form-control" id="variant" name="variant">
+                                            <option value="" disabled selected>Variant Type</option>
+                                            {% for variant_choice in variant_choices %}
+                                                <option value="{{ variant_choice.0 }}">{{ variant_choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="col-12">
+                                <label for="image">Upload a Single Image:</label>
+                                <input class=" my-2" type="file" name="image" accept="image/*">
+                            </div>
+                        
+                            <!-- Multiple Image Upload -->
+                            <div class="col-12">
+                                <label for="images">Upload Multiple Images:</label>
+                                <input class=" my-2" type="file" name="images" multiple accept="image/*">
+                            </div>
+                            <div class="col-12"><button type="submit" class="btn btn-danger"><em
+                                        class="icon ni ni-plus"></em><span>Add Now</span></button></div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
+
+{% block foot %} {% include 'footer.html' %} {% endblock %}

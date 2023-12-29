@@ -1,0 +1,70 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %} 
+<link rel="stylesheet" type="text/css" href="{% static 'styles/login.css' %}">
+
+<div class="wrapper" style="background-image: url({% static 'images/pro24.jpeg' %});margin-top:7rem;">
+    <div class="inner" style="max-width: 1520px;">
+        <div class="image-holder">
+            <img src="{% static 'images/pro24.jpeg' %}" alt="">
+        </div>
+        <form action="{% url 'user:otp' %}" method='POST'>
+            {% csrf_token %}
+            <h3>OTP</h3>
+
+
+      
+            <div class="form-wrapper">
+                <input type="text" placeholder="OTP" class="form-control" name="otp_entered">
+                <i class="zmdi zmdi-lock"></i>
+            </div>
+            <div class="links" style="  position: relative;width: 100%;display: flex;justify-content: space-between; "> <a></a>
+
+            </div> 
+            <button type="submit" id="confirmBtn">Confirm <i class="zmdi zmdi-arrow-right"></i></button>
+
+            <!-- Your existing timer and Resend OTP link -->
+            <div class="main" style="text-align: center;">
+                <p id="timer" style="font-size: 18px; color: #333; padding: 10px; border: 1px solid #ccc; background-color: #f4f4f4;margin-top: 16px;">Time left: <span id="countdown">60</span> seconds</p>
+                <a href="{% url 'user:newotp' %}" id="resendLink" style="display: none;">Resend OTP</a>
+            </div>
+            
+
+        
+        </form>
+
+    </div>
+</div>
+<script>
+    var countdown = 60;
+
+    function startTimer() {
+        var timerInterval = setInterval(function () {
+            countdown--;
+            document.getElementById("countdown").innerText = countdown;
+
+            if (countdown <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById("timer").innerText = "Time's up!";
+                document.getElementById("confirmBtn").style.display = "none"; // Hide Confirm button
+                document.getElementById("resendLink").style.display = "inline"; // Show Resend OTP link
+            }
+        }, 1000);
+    }
+
+   
+
+    document.addEventListener("DOMContentLoaded", function () {
+        startTimer();
+    });
+</script>
+
+{%endblock%}
+
+
+
+{% block foot %} {% include 'foot.html' %}  {% endblock %}

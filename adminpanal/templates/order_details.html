@@ -1,0 +1,243 @@
+
+{% extends "adminbase.html" %}
+
+{% block title %} admin{% endblock %}
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+
+<div class="nk-content ">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head nk-block-head-sm">
+                    <div class="nk-block-between g-3">
+                        <div class="nk-block-head-content">
+                            <h3 class="nk-block-title page-title">Order Details / <strong
+                                    class="text-primary small">{{ full_name }}</strong></h3>
+                        </div>
+                        <div class="nk-block-head-content"><a href="/dashboard/"
+                                class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em
+                                    class="icon ni ni-arrow-left"></em><span>Back</span></a><a
+                                href="customers.html"
+                                class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"><em
+                                    class="icon ni ni-arrow-left"></em></a></div>
+                    </div>
+                </div>
+                <div class="nk-block">
+                    <div class="card">
+                        <div class="card-aside-wrap">
+                            <div class="card-content">
+                                <ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card">
+                                    <li class="nav-item"><a class="nav-link " href="{% url 'profile_details' order_details.user.id %}"><em
+                                                class="icon ni ni-user-circle"></em><span>Personal</span></a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link active" href="#"><em
+                                                class="icon ni ni-repeat"></em><span>Orders</span></a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#"><em
+                                                class="icon ni ni-bell"></em><span>Notifications</span></a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#"><em
+                                                class="icon ni ni-activity"></em><span>Activities</span></a>
+                                    </li>
+                                    <li class="nav-item nav-item-trigger d-xxl-none"><a href="#"
+                                            class="toggle btn btn-icon btn-trigger"
+                                            data-target="userAside"><em
+                                                class="icon ni ni-user-list-fill"></em></a></li>
+                                </ul>
+                                <div class="card-inner">
+                                    <div class="nk-block">
+                                        <div class="nk-block-head">
+                                            <h5 class="title">Order Information</h5>
+                                 
+                                        </div>
+                                        <div class="profile-ud-list">
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">User Name</span><span
+                                                        class="profile-ud-value">Mr.{{ order_details.user }}</span></div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Email</span><span
+                                                        class="profile-ud-value">{{ order_details.email }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Phone
+                                                       </span><span class="profile-ud-value">{{ order_details.phone }}
+                                                        </span></div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Address</span><span
+                                                        class="profile-ud-value">{{ order_details.address_line1 }}</span></div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Country
+                                                        </span><span
+                                                        class="profile-ud-value">{{ order_details.country }}</span>
+                                                </div>
+                                            </div>
+
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="nk-block">
+                                        <div class="nk-block-head nk-block-head-line">
+                                            <h6 class="title overline-title text-base">Additional
+                                                Information</h6>
+                                        </div>
+                                        <div class="profile-ud-list">
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Payment id
+                                                        </span><span
+                                                        class="profile-ud-value">{{order_details.payment.payment_id}}
+                                                      </span></div>
+                                            </div>
+                                            {% comment %} <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Reg Method</span><span
+                                                        class="profile-ud-value">Email</span></div>
+                                            </div> {% endcomment %}
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Status</span>
+                                                    <span class="profile-ud-value badge badge-sm badge-dot has-bg {% if order_details.status == 1 %}bg-success{% elif order_details.status == 2 %}bg-info{% elif order_details.status == 3 %}bg-warning{% elif order_details.status == 4 %}bg-primary{% elif order_details.status == 5 %}bg-secondary{% elif order_details.status == 6 %}bg-danger{% else %}bg-secondary{% endif %} d-none d-sm-inline-flex">
+                                                        {{ order_details.get_status_display }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Payment mode
+                                                    </span><span
+                                                        class="profile-ud-value">{{ order_details.payment.payment_method }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">City
+                                                    </span><span
+                                                        class="profile-ud-value">{{ order_details.city }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">State
+                                                    </span><span
+                                                        class="profile-ud-value">{{ order_details.state }}</span>
+                                                </div>
+                                            </div>
+                                            
+
+                                        </div>
+                                    </div>
+                                
+                                    <div class="nk-divider divider md"></div>
+                                    <div class="nk-block">
+                                        <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                            
+                                            {% if order_product.status == 'Canceled' %}
+                                            <h5 class="title" style="color: #d9534f; font-size: 20px; margin-bottom: 10px;">Order Products (This item was canceled)</h5>
+                                            <div class="profile-ud-item">
+                                                
+                                                <div class="profile-ud wider">
+                                                    <button onclick="confirmRefund({{ order_product.id }})" class="btn btn-warning"
+                                                            style="color: #fff; background-color: #f0ad4e; border-color: #eea236; display: block; margin-top: 5px;">
+                                                        Approve Refund
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        {% elif order_product.status == 'Return' %} 
+                                        <h5 class="title" style="color: #d9534f; font-size: 20px; margin-bottom: 10px;">Order Products (Item Returned)</h5>
+
+                                        <div class="profile-ud-item">
+                                            
+                                            <div class="profile-ud wider">
+                                                <button onclick="confirmRefund({{ order_product.id }})" class="btn btn-warning"
+                                                        style="color: #fff; background-color: #f0ad4e; border-color: #eea236; display: block; margin-top: 5px;">
+                                                    Approve Refund
+                                                </button>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                            <h5 class="title">Order Products</h5>
+                                        {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="bq-note">
+                                            
+                                                <img src="{{ order_product.variant.image }}" class="img-fluid" style="border-radius: 45px; max-height: 200px; width: auto; ">
+                                                
+                                        
+                                        </div>
+                                        <div class="profile-ud-item">
+                                            <div class="profile-ud wider"><span
+                                                    class="profile-ud-label">Product Name
+                                                </span><span
+                                                    class="profile-ud-value">{{ order_product.variant.title }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-ud-item">
+                                            <div class="profile-ud wider"><span
+                                                    class="profile-ud-label">Quantity
+                                                </span><span
+                                                    class="profile-ud-value">{{ order_product.quantity }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-ud-item">
+                                            <div class="profile-ud wider"><span
+                                                    class="profile-ud-label">Total(included tax)
+                                                </span><span
+                                                    class="profile-ud-value">{{ grand_total }}</span>
+                                            </div>
+                                        </div>
+                                        {% if order_product.order.coupon %}
+                                        <div class="profile-ud-item">
+                                            <div class="profile-ud wider"><span
+                                                    class="profile-ud-label">coupon
+                                                </span><span
+                                                    class="profile-ud-value">{{order_product.order.coupon.discount_price}}</span>
+                                            </div>
+                                        </div>
+                                        {%endif%}
+                                        <div class="profile-ud-item">
+                                            {% comment %} <div class="profile-ud wider"><span
+                                                    class="profile-ud-label">Status
+                                                </span>       <span class=" profile-ud-value badge badge-sm badge-dot has-bg {% if order_product.status == 'New' %}bg-success{% elif order_product.status == 'Accepted' %}bg-info{% elif order_product.status == 'Canceled' %}bg-danger{% else %}bg-secondary{% endif %} d-none d-sm-inline-flex">
+                                                    {{ order_product.status }}
+                                                </span>
+                                            </div> {% endcomment %}
+                                        </div>
+                                        {% if order_product.user_note %}
+                                        <div class="profile-ud-item">
+                                            <div class="profile-ud wider"><span
+                                                    class="profile-ud-label">User Note
+                                                </span>       <span class=" profile-ud-value badge badge-sm badge-dot has-bg bg-danger d-none d-sm-inline-flex">
+                                                    {{order_product.user_note}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                            
+            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block foot %} {% include 'footer.html' %} {% endblock %}

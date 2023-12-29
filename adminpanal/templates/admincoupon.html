@@ -1,0 +1,243 @@
+{% extends "adminbase.html" %}
+
+{% block title %} admin{% endblock %}
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+
+<div class="nk-content ">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head nk-block-head-sm">
+                    <div class="nk-block-between">
+                        <div class="nk-block-head-content">
+                            <h3 class="nk-block-title page-title">Coupon</h3>
+                        </div>
+                        <div class="nk-block-head-content">
+                            <div class="toggle-wrap nk-block-tools-toggle"><a href="#"
+                                    class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                    data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+                                <div class="toggle-expand-content" data-content="pageMenu">
+                                    <ul class="nk-block-tools g-3">
+                                        <li>
+                                            <div class="form-control-wrap">
+                                                <div class="form-icon form-icon-right"><em
+                                                        class="icon ni ni-search"></em></div><input
+                                                    type="text" class="form-control" id="default-04"
+                                                    placeholder="Quick search">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            {% comment %} <div class="drodown"><a href="#"
+                                                    class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white"
+                                                    data-bs-toggle="dropdown">Status</a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <ul class="link-list-opt no-bdr">
+                                                        <li><a href="#"><span>New Items</span></a></li>
+                                                        <li><a href="#"><span>Featured</span></a></li>
+                                                        <li><a href="#"><span>Out of Stock</span></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div> {% endcomment %}
+                                        </li>
+                                        <li class="nk-block-tools-opt"><a href="#"
+                                                data-target="addProduct"
+                                                class="toggle btn btn-icon btn-primary d-md-none"><em
+                                                    class="icon ni ni-plus"></em></a><a href="#"
+                                                data-target="addProduct"
+                                                class="toggle btn btn-primary d-none d-md-inline-flex"><em
+                                                    class="icon ni ni-plus"></em><span>Add
+                                                 Coupon</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nk-block">
+                    <div class="card">
+                        <div class="card-inner-group">
+                            <div class="card-inner p-0">
+                                <div class="nk-tb-list">
+                                    <div class="nk-tb-item nk-tb-head">
+                                        <div class="nk-tb-col nk-tb-col-check">
+                                            <div
+                                                class="custom-control custom-control-sm custom-checkbox notext">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="pid"><label class="custom-control-label"
+                                                    for="pid"></label></div>
+                                        </div>
+                                        <div class="nk-tb-col tb-col-sm"><span>Coupon Image</span></div>
+                                        <div class="nk-tb-col tb-col-sm"><span>Coupon Name</span></div>
+                                        <div class="nk-tb-col"><span>Min amount</span></div>
+                                        <div class="nk-tb-col"><span>Discount</span></div>
+                                        
+                                        <div class="nk-tb-col tb-col-md"><span>Expire Date</span></div>
+                                        <div class="nk-tb-col tb-col-md"><span>status</span></div>
+                                        <div class="nk-tb-col tb-col-md"><span></span></div>
+                                        
+                                    </div>
+                                    
+                                    {% for i in coupons%}
+                                 
+                                    
+                                    <div class="nk-tb-item">
+                                        <div class="nk-tb-col nk-tb-col-check">
+                                            <div
+                                                class="custom-control custom-control-sm custom-checkbox notext">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="pid1"><label class="custom-control-label"
+                                                    for="pid1"></label></div>
+                                        </div>
+                                        <div class="nk-tb-col tb-col-sm"><span class="tb-product">
+                                            {% if i.image %}
+                                            <img src="{{i.image.url}} " alt=""class="thumb">{% endif %}
+                                            <span class="title">
+                                                   </span></span></div>
+                                        <div class="nk-tb-col"><span class="tb-sub">{{i.offer_name}}</span></div>
+                                        <div class="nk-tb-col"><span class="tb-sub">{{i.minimum_amount}}</span></div>
+                                        <div class="nk-tb-col"><span class="tb-lead"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{i.discount_price}}</span>
+                                        </div>
+                                       
+                                        <div class="nk-tb-col"><span class="tb-sub">{{i.expiration_time}}</span></div>
+                                        <div class="nk-tb-col tb-col-md"><span class="tb-sub">{{i.active}} 
+                                   
+                                            
+                                                </span></div>
+                                                <div class="nk-tb-col nk-tb-col-tools">
+                                                    <ul class="nk-tb-actions gx-1 my-n1">
+                                                        <li class="me-n1">
+                                                            <div class="dropdown"><a href="#"
+                                                                    class="dropdown-toggle btn btn-icon btn-trigger"
+                                                                    data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-h"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li><a href="{% url 'edit_coupon' i.id %}"><em
+                                                                                    class="icon ni ni-edit"></em><span>Edit
+                                                                                    Coupon</span></a></li>
+                                                                        <li><a href="#"><em
+                                                                                    class="icon ni ni-eye"></em><span>View
+                                                                                    Coupon</span></a></li> 
+                                                                        
+                                                                                {% if i.active %}
+                                                                                    <li>
+                                                                                        <a href="{% url 'soft_delete_coupon' i.id %}">
+                                                                                            <em class="icon ni ni-archive"></em>
+                                                                                            <span>Deactivate Coupon</span>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                {% else %}
+                                                                                    <li>
+                                                                                        <a href="{% url 'undelete_coupon' i.id %}">
+                                                                                            <em class="icon ni ni-refresh"></em>
+                                                                                            <span>Activate Coupon</span>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                {% endif %}
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                        
+                            </div>
+                            
+                            {%endfor%}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="nk-add-product toggle-slide toggle-slide-right" data-content="addProduct"
+                    data-toggle-screen="any" data-toggle-overlay="true" data-toggle-body="true"
+                    data-simplebar>
+                    <div class="nk-block-head">
+                        <div class="nk-block-head-content">
+                            <h5 class="nk-block-title">New Coupon</h5>
+                            <div class="nk-block-des">
+                                <p>Add information and add new Coupon.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="{% url "add_coupon" %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="nk-block">
+                            <!-- ... (existing form fields) ... -->
+                            
+                            <!-- Add Coupon Section -->
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="coupon-code">Coupon Name</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" name="coupon_name" class="form-control" id="coupon-code">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="coupon-code">Coupon Code</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" name="coupon_code" class="form-control" id="coupon-code">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="coupon-image">Coupon Image</label>
+                                    <div class="form-control-wrap">
+                                        <input type="file" name="coupon_image" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="coupon-discount">Coupon Discount (%)</label>
+                                    <div class="form-control-wrap">
+                                        <input type="number" name="coupon_discount" class="form-control" id="coupon-discount">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="coupon-minimum-amount">Minimum Amount for Coupon</label>
+                                    <div class="form-control-wrap">
+                                        <input type="number" name="coupon_minimum_amount" class="form-control" id="coupon-minimum-amount">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="coupon-expiration-time">Coupon Expiration Time</label>
+                                    <div class="form-control-wrap">
+                                        <input type="datetime-local" name="coupon_expiration_time" class="form-control" id="coupon-expiration-time">
+                                    </div>
+                                </div>
+                            </div>
+                    
+
+                            <!-- End Coupon Section -->
+                    
+                            <!-- ... (existing form fields) ... -->
+                    
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Add New</span></button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
+
+{% block foot %} {% include 'footer.html' %} {% endblock %}

@@ -1,0 +1,458 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %} 
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'order/css/vendors.min.css' %}"> {% endcomment %}
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/bs-stepper.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/jquery.bootstrap-touchspin.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/toastr.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/bootstrap-extended.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/colors.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/components.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/dark-layout.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/bordered-layout.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/semi-dark-layout.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/horizontal-menu.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/app-ecommerce.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/form-pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/form-wizard.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/ext-component-toastr.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/form-number-input.css' %}">
+<style>
+    .coupon-container {
+        margin-bottom: 20px; /* Adjust as needed */
+    }
+
+    .coupon-form {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .coupon-input {
+        flex: 1;
+        margin-right: 10px; /* Adjust as needed */
+    }
+
+    .apply-button {
+        width: 100px; /* Adjust as needed */
+    }
+    /* Add these styles to your existing CSS file or in a <style> tag in the head of your HTML document */
+
+        .card {
+            
+            border: 1px solid #ddd; /* Add a border for the card */
+            border-radius: 8px; /* Add rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+        }
+        
+        .card-body {
+            padding: 20px; /* Add padding to the card body */
+        }
+        
+        .cash-on-delivery-card {
+            background-color: #fff; /* Set background color for the card */
+            color: #333; /* Set text color */
+        }
+        
+        .card-text {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Style for the shopping-bag icon */
+        .card-text i[data-feather="shopping-bag"] {
+            color: #ff8c00; /* Set icon color */
+            font-size: 24px; /* Adjust icon size */
+        }
+        
+</style>
+    <!-- END: Page CSS-->
+
+<!-- BEGIN: Body-->
+
+
+<body class="horizontal-layout horizontal-menu  navbar-floating footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="">
+
+  <!-- BEGIN: Content-->
+  <div class="app-content content ecommerce-application">
+
+      <div class="content-wrapper">
+          <div class="content-header row">
+              
+              
+          </div>
+          <div class="content-body">
+              <div class="bs-stepper checkout-tab-steps">
+                  <!-- Wizard starts -->
+                  <div class="bs-stepper-header">
+                    <div class="step" data-target="#step-cart">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-box" style="background-color: #fe4c50;color:#fff;">
+                                <i data-feather="credit-card" class="font-medium-3"></i>     
+                            </span>
+                            <span class="bs-stepper-label">
+                                <a href="order/orderproduct/" class="bs-stepper-title" style="color:#000">Payment</a>
+                                <span class="bs-stepper-subtitle">Payment</span>
+                            </span>
+                        </button>
+                    </div>
+                  
+                </div>
+                  <!-- Wizard ends -->
+
+                  <div class="bs-stepper-content">
+                      <!-- Checkout Place order starts -->
+                      
+                              <!-- Checkout Place Order Right starts -->
+                              <div class="checkout-options">
+
+                                  <!-- Checkout Place Order Right ends -->
+                              </div>
+                          </div>
+                          <!-- Checkout Place order Ends -->
+                      </div>
+                           <!-- Checkout Customer Address Ends -->
+
+                      <!-- Checkout Payment Starts -->
+                      <div id="step-payment" class="content">
+                          <form id="checkout-payment" class="list-view product-checkout" onsubmit="return false;">
+                              <div class="payment-type">
+                                  <div class="card">
+                                      <div class="card-header flex-column align-items-start">
+                                          <h4 class="card-title">Payment options</h4>
+                                          <p class="card-text text-muted mt-25">Be sure to click on correct payment option</p>
+                                      </div>
+                                      <div class="card-body">
+                                          <h6 class="card-holder-name my-75">{{order.first_name}}</h6>
+                                          <div class="custom-control custom-radio">
+                                              <input type="radio" id="customColorRadio1" name="paymentOptions" class="custom-control-input" checked />
+                                              <label class="custom-control-label" for="customColorRadio1">
+                                                  <strong>Order Number:</strong>{{order.order_number}}
+                                              </label>
+                                          </div>
+                                          <div class="customer-cvv mt-1">
+
+                                          </div>
+                                          <hr class="my-2" />
+                                          <ul class="other-payment-options list-unstyled">
+                                              <li class="py-50">
+                                                  <div class="custom-control custom-radio">
+                                                      <input type="" id="customColorRadio2" name="paymentOptions" class="custom-control-input" />
+                                                      <label class="custom-control-label" for="customColorRadio2"> {{order.country}} / {{order.state}} / {{order.city}} </label>
+                                                  </div>
+                                              </li>
+                                              <li class="py-50">
+                                                  <div class="custom-control custom-radio">
+                                                      <input type="" id="customColorRadio3" name="paymentOptions" class="custom-control-input" />
+                                                      <label class="custom-control-label" for="customColorRadio3"> {{order.address_line1}} </label>
+                                                  </div>
+                                              </li>
+                                              <li class="py-50">
+                                                  <div class="custom-control custom-radio">
+                                                      <input type="" id="customColorRadio4" name="paymentOptions" class="custom-control-input" />
+                                                      <label class="custom-control-label" for="customColorRadio4"> {{order.phone}} </label>
+                                                  </div>
+                                              </li>
+                                              <li class="py-50">
+                                                  <div class="custom-control custom-radio">
+                                                      <input type="" id="customColorRadio5" name="paymentOptions" class="custom-control-input" />
+                                                      <strong>Items  :  </strong>
+                                                      {% for i in cart_items %}
+                                                      <label class="custom-control-label" for="customColorRadio5"> {{i.variant.title}} </label>
+                                                      {%endfor%}
+                                                      
+                                                  </div>
+                                              </li>
+                                          </ul>
+                                          <hr class="my-2" />
+                                         <!-- Combine "Cash on Delivery" and "Wallet Payment" in the same row -->
+                                            <div class="card-deck">
+                                                <!-- Cash on Delivery Card -->
+                                                <div class="card cash-on-delivery-card mb-4">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Cash on Delivery</h5>
+                                                        <p class="card-text">
+                                                            <i class="fas fa-money-bill d-block h2 mb-3"></i>
+                                                            <i data-feather="shopping-bag" class="mr-2"></i>
+                                                            <span class="align-middle">Pay with cash upon delivery</span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <a href="{% url 'order:cash_on_delivery' order.order_number %}"  type="submit" class="btn btn-primary">Cash on Delivery</a>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Wallet Payment Card -->
+                                                <div class="card wallet-payment-card mb-4">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Wallet Payment</h5>
+                                                        <p class="card-text">
+                                                            <span class="wallet-icon">&#128176;</span>
+                                                            <span class="align-middle">Pay with your wallet</span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <!-- Add an ID to the wallet payment button for easy identification -->
+                                                        <button id="wallet-payment-btn" type="button" class="btn btn-info">Pay with Wallet</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        
+                                        
+                                      </div>
+                                      
+                                  </div>
+                              </div>
+                              <div class="amount-payable checkout-options">
+                                <div class="card">
+                                    <div class="card-body">
+                                    <label class="section-label mb-1">Options</label>
+                                    <div class="coupons input-group input-group-merge">
+                                        <form method="post" class="coupon-form" id="coupon-form">
+                                            {% csrf_token %}
+                                            <input name="coupon" type="text" id="coupon-input" class="form-control coupon-input" placeholder="Enter your coupon code" aria-label="Coupon Code" aria-describedby="input-coupons" />
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-primary apply-button" id="apply-coupon-btn">Apply</button>
+                                            </div>
+                                        </form>
+                                    </div>                                    
+                                    <hr>
+                                    
+                                    <div class="card-header">
+                                        <h4 class="card-title">Price Details</h4>
+                                    </div>
+                                    <div class="card-body" id="price-details-body">
+                                        <ul class="list-unstyled price-details">
+                                            <li class="price-detail" id="price-items">
+                                                <div class="details-title">Price of {{cart_items.count}} items</div>
+                                                <div class="detail-amt">
+                                                    <strong id="total-price"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{total}}</strong>
+                                                </div>
+                                            </li>
+                                            <li class="price-detail" id="price-coupon">
+                                                <div class="details-title">Coupon</div>
+                                                <div class="detail-amt discount-amt text-success" id="coupon-price">{{coupon}}</div>
+                                            </li>
+                                            <li class="price-detail" id="price-tax">
+                                                <div class="details-title">Tax</div>
+                                                <div class="detail-amt discount-amt text-success" id="tax-price"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{tax}}</div>
+                                            </li>
+                                            <li class="price-detail" id="price-shipping">
+                                                <div class="details-title">Delivery Charges</div>
+                                                <div class="detail-amt discount-amt text-success" id="shipping-price"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{shipping}}</div>
+                                            </li>
+                                        </ul>
+                                        <hr />
+                                        <ul class="list-unstyled price-details">
+                                            <li class="price-detail" id="price-payable">
+                                                <div class="details-title">Amount Payable</div>
+                                                <div class="detail-amt font-weight-bolder" id="grand-total"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{grand_total}}</div>
+                                         
+                                            </li>
+                                            <li class="price-detail" id="price-payable">
+                                                <div class="details-title"></div>
+                                                <div class="detail-amt font-weight-bolder" id="grand-total" ></div>
+                                                <i class="fa fa-exclamation-triangle" style="color: red;" aria-hidden="true">not included shipping charge</i>
+                                                
+                                            </li>
+                                        </ul>
+                                    </div>
+                                 
+                                    <div id="paypal-button-container"></div>
+
+                                    </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                      <!-- Checkout Payment Ends -->
+                      <!-- </div> -->
+                  </div>
+              </div>
+
+          </div>
+      </div>
+  </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="{% static 'order/js/vendors.min.js' %}"></script>
+    <!-- BEGIN Vendor JS-->
+    
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'order/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'order/js/bs-stepper.min.js' %}"></script>
+    <script src="{% static 'order/js/jquery.bootstrap-touchspin.js' %}"></script>
+    <script src="{% static 'order/js/toastr.min.js' %}"></script>
+    <!-- END: Page Vendor JS-->
+    
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'order/js/app-menu.js' %}"></script>
+    <script src="{% static 'order/js/app.js' %}"></script>
+    <!-- END: Theme JS-->
+    
+    <!-- BEGIN: Page JS-->
+    <script src="{% static 'order/js/app-ecommerce-checkout.js' %}"></script>
+    <script src="{% static 'order/js/cart.js' %}"></script>
+    
+    <!-- END: Page JS-->
+
+    <script>
+        $(window).on('load', function() {
+            if (feather) {
+                feather.replace({
+                    width: 14,
+                    height: 14
+                });
+            }
+        })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Handle Apply button click
+            $("#apply-coupon-btn").on("click", function() {
+                // Get the value from the coupon input field
+                var couponValue = $("#coupon-input").val();
+           
+    
+                // Perform AJAX request
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'order:apply_coupon' %}",  // Update with your actual URL
+                    data: { 'coupon': couponValue },  // Pass the coupon value in the data
+                    dataType: "json",
+                    headers: { "X-CSRFToken": getCookie("csrftoken") },
+                    success: function(response) {
+                        if ('error' in response) {
+                            console.log("Error:", response.error);
+                            // Provide feedback to the user, e.g., display an error message
+                            $("#error-message").text(response.error);
+                    
+                            // Display Swal error message
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: response.error,
+                            });
+                        }
+                    
+                        if ('success' in response) {
+                            console.log("Success:", response.success);
+                            // Display success message to the user
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: response.success,
+                            });
+                    
+                            // Update the relevant parts of the page with the response
+                            updatePriceDetails(response);
+                            // Clear any previous error messages
+                            $("#error-message").text('');
+                        }
+                    },
+                    
+                    error: function(xhr, status, error) {
+                        console.log("AJAX Error:", status, error);
+                        // Provide a generic error message to the user
+                        $("#error-message").text('An error occurred while processing your request. Please try again.');
+    
+                        // Display Swal error message
+                        Swal.fire({
+                            icon: "error",
+                            title: "AJAX Error",
+                            text: 'An error occurred while processing your request. Please try again.',
+                        });
+                    }
+                });
+            });
+    
+            // Function to update price details on the page
+            function updatePriceDetails(data) {
+                // Update the price details using the received data
+                $("#total-price").html("<strong style=\"font-family: 'Arial', 'Helvetica', sans-serif;\">&#8377;</strong>" + data.total);
+                $("#coupon-price").html("<strong style=\"font-family: 'Arial', 'Helvetica', sans-serif;\">&#8377;</strong>" + data.coupon);
+                $("#tax-price").html("<strong style=\"font-family: 'Arial', 'Helvetica', sans-serif;\">&#8377;</strong>" + data.tax);
+                $("#shipping-price").html("<strong style=\"font-family: 'Arial', 'Helvetica', sans-serif;\">&#8377;</strong>" + data.shipping);
+                $("#grand-total").html("<strong style=\"font-family: 'Arial', 'Helvetica', sans-serif;\">&#8377;</strong>" + data.grand_total);
+            }
+            
+        });
+    </script>
+
+    
+    <script>
+        $(document).ready(function () {
+            // Handle Wallet Payment button click
+            $("#wallet-payment-btn").on("click", function () {
+                // Perform AJAX request for wallet payment
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'order:wallet_payment' order.order_number %}",
+                    dataType: "json",
+                    headers: { "X-CSRFToken": getCookie("csrftoken") },
+                    success: function (response) {
+                        console.log("successResponse:", response);
+                        
+                        if ('success' in response) {
+                            console.log("Success:", response.success);
+                            // Display a success message to the user
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: response.message,
+                            });
+                            window.location.href = "{% url 'order:success'  %}";
+                            // Update the relevant parts of the page with the response
+                            // Add logic to update the UI based on the wallet payment response
+                            // (e.g., show a success message, update order status, etc.)
+                        }
+                        
+                        if ('error' in response) {
+                            console.log("Error:", response.error);
+                            // Display an error message to the user
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: response.error,
+                            });
+                        }
+        
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("AJAX Error:", status, error);
+                        // Provide a generic error message to the user
+                        Swal.fire({
+                            icon: "error",
+                            title: "AJAX Error",
+                            text: 'An error occurred while processing your request. Please try again.',
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+        
+        
+</body>
+
+{% include 'foot.html' %}  {% endblock %}
+
+
+
+
+
+

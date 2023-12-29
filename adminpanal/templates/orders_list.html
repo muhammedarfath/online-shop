@@ -1,0 +1,163 @@
+{% extends "adminbase.html" %}
+
+{% block title %} admin{% endblock %}
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+
+
+
+
+<div class="nk-content ">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head nk-block-head-sm">
+                    <div class="nk-block-between">
+                        <div class="nk-block-head-content">
+                            <h3 class="nk-block-title page-title">Orders</h3>
+                        </div>
+                        <div class="nk-block-head-content">
+                            <div class="toggle-wrap nk-block-tools-toggle"><a href="#"
+                                    class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em
+                                        class="icon ni ni-more-v"></em></a>
+                                <div class="toggle-expand-content" data-content="pageMenu">
+                                    <ul class="nk-block-tools g-3">
+                                        <li>
+                                            <div class="form-control-wrap">
+                                                <div class="form-icon form-icon-right"><em
+                                                        class="icon ni ni-search"></em></div><input type="text"
+                                                    class="form-control" id="default-04"
+                                                    placeholder="Quick search by id">
+                                            </div>
+                                        </li>
+                                        {% comment %} <li>
+                                            <div class="drodown"><a href="#"
+                                                    class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white"
+                                                    data-bs-toggle="dropdown">Status</a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <form method="post" action="{% url 'order_list' %}">
+                                                        {% csrf_token %}
+                                                        <div style="margin-bottom: 10px;">
+                                                            <select class="form-control" id="variant" name="orderStatus" style="width: 100%;">
+                                                                <option value="" disabled selected>Order Status</option>
+                                                                {% for order_choice in order_status %}
+                                                                    <option value="{{ order_choice.0 }}">{{ order_choice.1 }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    
+                                                        <input type="hidden" name="orderId" value="{{ orders.id }}">
+                                                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </li> {% endcomment %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nk-block">
+                    <div class="nk-tb-list is-separate is-medium mb-3">
+                        <div class="nk-tb-item nk-tb-head">
+                            <div class="nk-tb-col nk-tb-col-check">
+                                <div class="custom-control custom-control-sm custom-checkbox notext">
+                                    <input type="checkbox" class="custom-control-input" id="oid"><label
+                                        class="custom-control-label" for="oid"></label>
+                                </div>
+                            </div>
+                            <div class="nk-tb-col"><span>Order</span></div>
+                            <div class="nk-tb-col tb-col-md"><span>Date</span></div>
+                            <div class="nk-tb-col"><span class="d-none d-sm-block">Status</span></div>
+                            <div class="nk-tb-col"><span class="d-none d-sm-block">User Status</span></div>
+                            <div class="nk-tb-col tb-col-sm"><span>Customer email</span></div>
+                            <div class="nk-tb-col tb-col-md"><span>payment method</span></div>
+                            <div class="nk-tb-col"><span>Product Price</span></div>
+                            <div class="nk-tb-col nk-tb-col-tools">
+                            </div>
+                        </div>
+                        {% for order in orders %}
+                        {% if order.order.status != 6 and order.order.status != 7 %}
+                        <div class="nk-tb-item">
+                            <div class="nk-tb-col nk-tb-col-check">
+                                <div class="custom-control custom-control-sm custom-checkbox notext">
+                                    <input type="checkbox" class="custom-control-input" id="oid02"><label
+                                        class="custom-control-label" for="oid02"></label>
+                                </div>
+                            </div>
+                            <div class="nk-tb-col"><span class="tb-lead"><a href="#">#{{order.id}}</a></span>
+                            </div>
+                            <div class="nk-tb-col tb-col-md"><span class="tb-sub">{{order.create_at}}</span>
+                            </div>
+                            <div class="nk-tb-col">
+                                {% comment %} <span class="dot {% if order.status == 'New' %}bg-success{% elif order.status == 'Accepted' %}bg-info{% endif %} d-sm-none"></span> {% endcomment %}
+                                <span class="badge badge-sm badge-dot has-bg {% if order.order.status == 1 %}bg-success{% elif order.order.status == 2 %}bg-info{% elif order.order.status == 3 %}bg-warning{% elif order.order.status == 4 %}bg-primary{% elif order.order.status == 5 %}bg-secondary{% elif order.order.status == 6 %}bg-danger{% else %}bg-secondary{% endif %} d-none d-sm-inline-flex">
+                                    {{ order.order.get_status_display }}
+                                </span>
+                                
+                            </div>
+                            <div class="nk-tb-col">
+                                {% comment %} <span class="dot {% if order.status == 'New' %}bg-success{% elif order.status == 'Accepted' %}bg-info{% endif %} d-sm-none"></span> {% endcomment %}
+                                <span class="badge badge-sm badge-dot has-bg {% if order.status == 'New' %}bg-success{% elif order.status == 'Accepted' %}bg-info{% elif order.status == 'Canceled' %}bg-danger{% else %}bg-secondary{% endif %} d-none d-sm-inline-flex">
+                                    {{ order.status }}
+                                </span>
+                                
+                            </div>
+                            <div class="nk-tb-col tb-col-sm"><span class="tb-sub">{{order.order.email}}</span>
+                            </div>
+                            <div class="nk-tb-col tb-col-md"><span class="tb-sub text-primary">{{order.order.payment.payment_method}}</span></div>
+                            <div class="nk-tb-col"><span class="tb-lead"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{order.grand_total}}</span></div>
+                            <div class="nk-tb-col nk-tb-col-tools">
+                                <ul class="nk-tb-actions gx-1">
+                                    {% comment %} <li class="nk-tb-action-hidden"><a href="#"
+                                            class="btn btn-icon btn-trigger btn-tooltip" title="Mark as Delivered"><em
+                                                class="icon ni ni-truck"></em></a></li> {% endcomment %}
+                                    <li class="nk-tb-action-hidden"><a href="{% url 'order_details' order.order.id %}"
+                                            class="btn btn-icon btn-trigger btn-tooltip" title="View Order"><em
+                                                class="icon ni ni-eye"></em></a></li>
+                                    <li>
+                                    <li>
+                                     
+                                        <div class="dropdown me-n1">
+                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown">
+                                                <em class="icon ni ni-more-h"></em>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end" style="min-width: 200px; padding: 10px;">
+                                        
+                                                <form method="post" action="{% url 'order_list' %}">
+                                                    {% csrf_token %}
+                                        
+                                                    <div style="margin-bottom: 10px;">
+                                                        <select class="form-control" id="variant" name="orderStatus" style="width: 100%;">
+                                                            <option value="" disabled selected>Order Status</option>
+                                                            {% for order_choice in order_status %}
+                                                                <option value="{{ order_choice.0 }}">{{ order_choice.1 }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                        
+                                                    <input type="hidden" name="orderId" value="{{ order.order.id }}">
+                                                    <input type="hidden" name="variantId" value="{{ order.variant.id }}">
+                                        
+                                                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit</button>
+                                                </form>
+                                              
+                                            </div>
+                                        </div>
+                                        
+                                      
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {%endfor %}
+ 
+                    </div>
+
+
+                    {% endblock %}
+                    {% block foot %} {% include 'footer.html' %} {% endblock %}

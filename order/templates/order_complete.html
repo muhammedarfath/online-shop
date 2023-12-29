@@ -1,0 +1,264 @@
+{% extends "homebase.html" %}
+{% load static %}
+
+{% block title %} {{ setting.title }} {% endblock %}
+
+{% block sidebar %}
+  {% include 'sidebar.html' %}
+{% endblock %}
+
+{% block body %} 
+                    
+
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/invoice.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/vendors.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/pickers/flatpickr/flatpickr.min.css' %}">
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"> {% endcomment %}
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/bootstrap-extended.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/colors.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/components.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/dark-layout.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/bordered-layout.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/semi-dark-layout.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/horizontal-menu.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'order/css/form-flat-pickr.css' %}">
+<body class="horizontal-layout horizontal-menu  navbar-floating footer-static" >
+
+
+
+  <body class="horizontal-layout horizontal-menu  navbar-floating footer-static  ">
+
+
+    <div class="app-content content" style="margin-top:6rem;">
+
+        <div class="content-overlay"></div>
+        <div class="header-navbar"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+            </div>
+            <div class="content-body">
+              <div id="invoice-content">
+                <section class="invoice-preview-wrapper">
+                    <div class="row invoice-preview">
+                        <!-- Invoice -->
+                        <div class="col-xl-9 col-md-8 col-12" id='tablePrint'>
+                            <div class="card invoice-preview-card">
+                                <div class="card-body invoice-padding pb-0">
+                                    <!-- Header starts -->
+                                    <div class="d-flex justify-content-between flex-md-row flex-column invoice-spacing mt-0">
+                                        <div>
+                                            <div class="logo-wrapper">
+                                                
+                                              <h3 class="text-dark invoice-logo">COLO<span style="color:#fe4c50">SHOP</span></h3>
+                                            </div>
+                                            <p class="card-text mb-25">Office {{company.company}}</p>
+                                            <p class="card-text mb-25">KERALA,INDIA</p>
+                                            <p class="card-text mb-0">+91{{company.phone}}</p>
+                                        </div>
+                                        <div class="mt-md-0 mt-2">
+                                            <h4 class="invoice-title">
+                                                Invoice
+                                                <span class="invoice-number">#{{order_products.order.order_number}}</span>
+                                            </h4>
+                                            <div class="invoice-date-wrapper">
+                                                <p class="invoice-date-title">Date Issued:</p>
+                                                <p class="invoice-date">{{ order_products.order.create_at }}</p>
+                                            </div>
+                                            <div class="invoice-date-wrapper">
+                                                <p class="invoice-date-title">Due Date:</p>
+                                                <p class="invoice-date">29/08/2020</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Header ends -->
+                                </div>
+
+                                <hr class="invoice-spacing" />
+
+                                <!-- Address and Contact starts -->
+                                <div class="card-body invoice-padding pt-0">
+                                    <div class="row invoice-spacing">
+                                        <div class="col-xl-8 p-0">
+                                            <h6 class="mb-2">Invoice To:</h6>
+                                            <h6 class="mb-25">{{order_products.order.first_name}}</h6>
+                                            <p class="card-text mb-25">{{order_products.order.address_line1}}</p>
+                                            <p class="card-text mb-25">{{order_products.order.city}},{{order.state}}</p>
+                                            <p class="card-text mb-25">{{order_products.order.phone}}</p>
+                                            <p class="card-text mb-0">{{order_products.order.email}}</p>
+                                        </div>
+                                        <div class="col-xl-4 p-0 mt-xl-0 mt-2">
+                                            <h6 class="mb-2">Payment Details:</h6>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="pr-1">Total Due:</td>
+                                                        <td><span class="font-weight-bold"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{subtotal}}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pr-1">Payment method:</td>
+                                                        <td>{{order_products.order.payment.payment_method}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pr-1">Country:</td>
+                                                        <td>{{order_products.order.country}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pr-1">Payment ID:</td>
+                                                        <td>{{order_products.order.payment.payment_id}}</td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Address and Contact ends -->
+
+                                <!-- Invoice Description starts -->
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="py-1">Task description</th>
+                                                <th class="py-1">Rate</th>
+                                                <th class="py-1">Quantity</th>
+                                                <th class="py-1">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="py-1">
+                                                  <img style="width: 80px;" src="{{ order_products.variant.image }}" >
+                                                    <p class="card-text font-weight-bold mb-25">{{order_products.variant.title}}</p>
+                                                    <p class="card-text text-nowrap">
+                                                        <strong>Color:</strong>{{ order_products.variant.color.name }},<strong>Size:</strong>{{ order_products.variant.size.name }}
+                                                    </p>
+                                                </td>
+                                                <td class="py-1">
+                                                    <span class="font-weight-bold"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{order_products.variant.price}}</span>
+                                                </td>
+                                                <td class="py-1">
+                                                    <span class="font-weight-bold">{{qty}}</span>
+                                                </td>
+                                                <td class="py-1">
+                                                    <span class="font-weight-bold"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{subtotal}}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="card-body invoice-padding pb-0">
+                                    <div class="row invoice-sales-total-wrapper">
+                                        <div class="col-md-6 order-md-1 order-2 mt-md-0 mt-3">
+
+                                        </div>
+                                        <div class="col-md-6 d-flex justify-content-end order-md-2 order-1">
+                                            <div class="invoice-total-wrapper">
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">Subtotal:</p>
+                                                    <p class="invoice-total-amount"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{subtotal}}</p>
+                                                </div>
+
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">Tax:</p>
+                                                    <p class="invoice-total-amount">{{tax}}</p>
+                                                </div>
+                                                <hr class="my-50" />
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">Total:</p>
+                                                    <p class="invoice-total-amount"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{grand_total}}</p>
+                                                </div>
+                                                <div class="invoice-total-item" >
+                                                    <p class="invoice-total-title" style="color:green;">Shipping:</p>
+                                                    <p class="invoice-total-amount" style="color:green;"><strong style="font-family: 'Arial', 'Helvetica', sans-serif;">&#8377;</strong>{{shipping}}.00</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Invoice Description ends -->
+
+                                <hr class="invoice-spacing" />
+
+                                <!-- Invoice Note starts -->
+                                <div class="card-body invoice-padding pt-0">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="font-weight-bold">Note:</span>
+                                            <span>It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance
+                                                projects. Thank You!</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Invoice Note ends -->
+                            </div>
+                        </div>
+                        <!-- /Invoice -->
+
+                <!-- Invoice Actions -->
+                        <div class="col-xl-3 col-md-4 col-12 invoice-actions mt-md-0 mt-2">
+                            <div class="card">
+                                <div class="card-body">
+   
+                                  <a class="btn btn-outline-secondary btn-block mb-75" id="sales-report-submit" onclick="pdf()">
+                                    Print
+                                </a>
+                                   
+                                <a href="/user/orders/" class="btn btn-warning btn-block" >
+                                  My Orders
+                               </a>
+
+
+                                    <a href="/category_products/" class="btn btn-success btn-block" >
+                                       Back to Shop
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Invoice Actions -->
+                    </div>
+                </section>
+
+              
+                  <!-- Your existing invoice content here -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+
+
+    <script src="{% static 'js/invoice.js'%}"></script>
+
+
+<script>
+  function pdf() {
+      const x = document.body.innerHTML;
+      const y = document.getElementById('tablePrint').innerHTML;
+      document.body.innerHTML = y;
+      window.print();
+      document.body.innerHTML = x; // Restore the original content
+  }
+</script>
+</body>
+
+    {% endblock %}
+
+    {% block foot %}
+    
+    
+      {% include 'foot.html' %}
+    
+    {% endblock %}
+    
+
+
+
+
+

@@ -1,0 +1,155 @@
+
+{% extends "adminbase.html" %}
+
+{% block title %} admin{% endblock %}
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+
+
+
+
+<div class="nk-content ">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head nk-block-head-sm">
+                    <div class="nk-block-between g-3">
+                        <div class="nk-block-head-content">
+                            <h3 class="nk-block-title page-title">Customer / <strong
+                                    class="text-primary small">{{ user }}</strong></h3>
+                        </div>
+                        <div class="nk-block-head-content"><a href="customers.html"
+                                class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em
+                                    class="icon ni ni-arrow-left"></em><span>Back</span></a><a
+                                href="customers.html"
+                                class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"><em
+                                    class="icon ni ni-arrow-left"></em></a></div>
+                    </div>
+                </div>
+                <div class="nk-block">
+                    <div class="card">
+                        <div class="card-aside-wrap">
+                            <div class="card-content">
+                                <ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card">
+                                    <li class="nav-item"><a class="nav-link active" href="#"><em
+                                                class="icon ni ni-user-circle"></em><span>Personal</span></a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#"><em
+                                                class="icon ni ni-repeat"></em><span>Orders</span></a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#"><em
+                                                class="icon ni ni-bell"></em><span>Notifications</span></a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#"><em
+                                                class="icon ni ni-activity"></em><span>Activities</span></a>
+                                    </li>
+                                    
+                                </ul>
+                                <div class="card-inner">
+                                    <div class="nk-block">
+                                        <div class="nk-block-head">
+                                            <h5 class="title">Personal Information</h5>
+                                            <p>Basic info, like your name and address, that you use on
+                                                Nio Platform.</p>
+                                        </div>
+                                        <div class="profile-ud-list">
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Title</span><span
+                                                        class="profile-ud-value">Mr.</span></div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">First Name</span><span
+                                                        class="profile-ud-value">{{ user.first_name }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">User Name
+                                                       </span><span class="profile-ud-value">{{user.username}}
+                                                        </span></div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Lastname</span><span
+                                                        class="profile-ud-value">{{user.last_name}}</span></div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Mobile
+                                                        Number</span><span
+                                                        class="profile-ud-value">{{ profile.phone }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Email
+                                                        Address</span><span
+                                                        class="profile-ud-value">{{user.email}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nk-block">
+                                        <div class="nk-block-head nk-block-head-line">
+                                            <h6 class="title overline-title text-base">Additional
+                                                Information</h6>
+                                        </div>
+                                        <div class="profile-ud-list">
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Joining
+                                                        Date</span><span
+                                                        class="profile-ud-value">{{profile.created_at}}
+                                                      </span></div>
+                                            </div>
+                                            {% comment %} <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Reg Method</span><span
+                                                        class="profile-ud-value">Email</span></div>
+                                            </div> {% endcomment %}
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Country</span><span
+                                                        class="profile-ud-value">{{profile.country}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider"><span
+                                                        class="profile-ud-label">Nationality</span><span
+                                                        class="profile-ud-value">{{profile.country}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nk-divider divider md"></div>
+                                    <div class="nk-block">
+                                        <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                            <h5 class="title">User Photo</h5><a href="#"
+                                                class="link link-sm">+ Add Note</a>
+                                        </div>
+                                        <div class="bq-note">
+                                            
+                                                {% if profile.image is not None  %}
+                                                <img src="{{ profile.image.url }}" class="img-fluid" style="border-radius: 45px; max-height: 200px; width: auto;">
+                                                {%else%}
+                                                <img src="" class="img-fluid" style="border-radius: 45px; max-height: 200px; width: auto;">
+                                                {%endif%}
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block foot %} {% include 'footer.html' %} {% endblock %}

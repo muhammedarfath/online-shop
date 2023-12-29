@@ -1,0 +1,100 @@
+{% extends "adminbase.html" %}
+
+{% block title %} admin{% endblock %}
+
+{% block sidebar %} {% include 'side.html' %} {% endblock %}
+{% block body %}
+  
+<div class="nk-content" style="width: 100%;">
+    <form action="{% url 'edit_coupon' coupon.id %}" method="post" enctype="multipart/form-data">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="components-preview wide-md mx-auto">
+                    <div class="nk-block-head nk-block-head-lg wide-sm">
+                        <div class="nk-block-head-content">
+                            <div class="row g-gs">
+                                <div class="col-lg-12">
+                                    <div class="card h-100" style="width: 100%;">
+                                        <div class="card-inner">
+                                            <div class="card-head">
+                                                <h5 class="card-title">Edit Coupon</h5>
+                                            </div>
+                                            
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-full-name">Coupon Name</label>
+                                                    <input type="text" name="name" value="{{ coupon.offer_name }}" class="form-control" id="cf-full-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-full-name">Coupon Code</label>
+                                                    <input type="text" name="code" value="{{ coupon.code }}" class="form-control" id="cf-full-name">
+                                                    
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label class="form-label" for="status">Status</label>
+                                                    <div class="form-control-wrap">
+                                                        <select class="form-control" id="status" name="status">
+                                                            <option value="true" {% if coupon.status %}selected{% endif %}>True</option>
+                                                            <option value="false" {% if not coupon.status %}selected{% endif %}>False</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-full-name">Coupon Discount</label>
+                                                    <input type="text" name="discount_price" value="{{ coupon.discount_price }}" class="form-control" id="cf-full-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="cf-full-name">Coupon Minimum Amount</label>
+                                                    <input type="text" name="minimum_amount" value="{{ coupon.minimum_amount }}" class="form-control" id="cf-full-name">
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="coupon-expiration-time">Coupon Expiration Time</label>
+                                                        <div class="form-control-wrap">
+                                                            <input type="datetime-local" value="{{ coupon.expiration_time|date:'Y-m-d\TH:i' }}" name="coupon_expiration_time" class="form-control" id="coupon-expiration-time">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label" for="cf-subject">Coupon Image</label>
+                                                    <input name="image" type="file" class="form-control" id="cf-subject">
+                                                    {% if coupon.image %}
+                                                        <img src="{{ coupon.image.url }}" alt="Coupon Image" width="100">
+                                                    {% else %}
+                                                        <p>No image available</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-lg btn-primary">Save</button>
+                                                </div>
+                                            {% if messages %}
+                                            <ul class="messages">
+                                                {% for message in messages %}
+                                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                                                    {{ message }}
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+</div>
+
+    
+
+
+{%endblock%}
+{% block foot %} {% include 'footer.html' %} {% endblock %}
