@@ -216,6 +216,8 @@ def signup_form(request):
             request.session['signup_username']=username
             request.session['signup_otp'] = otp
   
+  
+            print(otp)
 
 
 

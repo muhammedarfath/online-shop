@@ -35,16 +35,18 @@
                     <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="menu_selection">
-                    <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                    <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                    {% if user.id is not None %}
+                    <li><a href="/user/logout/"><i class="fa fa-sign-in" aria-hidden="true"></i>Log Out</a></li>
+                    {% else %}
+                    <li><a href="/user/login/"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                    <li><a href="/user/signup/"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                    {% endif %}
                 </ul>
             </li>
-            <li class="menu_item"><a href="#">home</a></li>
-            <li class="menu_item"><a href="#">shop</a></li>
-            <li class="menu_item"><a href="#">promotion</a></li>
-            <li class="menu_item"><a href="/aboutus">about us</a></li>
-            <li class="menu_item"><a href="#">blog</a></li>
-            <li class="menu_item"><a href="#">contact</a></li>
+            <li class="menu_item"><a href="/home/">home</a></li>
+            <li class="menu_item"><a href="/category_products/">shop</a></li>
+            <li class="menu_item"><a href="/aboutus/">about us</a></li>
+            <li class="menu_item"><a href="/contact/">contact</a></li>
         </ul>
     </div>
 </div>
