@@ -38,17 +38,17 @@ def _cart_id(request):  # private function
         cart = request.session.create()
     return cart
 
-@login_required(login_url="/user/login/") 
 def addtoshopcart(request, id):
     current_user = request.user
     product = Product.objects.get(pk=id)
-    try:
-        wishitem = WishlistItem.objects.get(user=current_user, product=product)
-        wishitem.delete()
-    except WishlistItem.DoesNotExist:
-        pass 
+
 
     if current_user.is_authenticated:
+        try:
+            wishitem = WishlistItem.objects.get(user=current_user, product=product)
+            wishitem.delete()
+        except WishlistItem.DoesNotExist:
+            pass 
         if product.variant != "None":
             variantid = request.POST.get("variantid")
             checkinvariant = ShopCart.objects.filter(
