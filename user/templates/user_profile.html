@@ -737,9 +737,9 @@
 
                     <div class="d-flex align-items-start">
                       {% if profile.image.url %}
-                          <img src="{{ profile.image.url }}" class="rounded-circle avatar-lg img-thumbnail" alt="image">
+                          <img src="{{ profile.image.url }}" class="rounded-circle avatar-lg img-thumbnail" alt="">
                       {% else %}
-                          <img src="{% static 'images/profile.png' %}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
+                          <img src="{% static 'images/profile.png' %}" class="rounded-circle avatar-lg img-thumbnail" alt="">
                       {% endif %}
 
                         <div class="w-100 ms-3">
@@ -827,7 +827,7 @@
 
                     {% comment %} What chat room would you like to enter?<br>
                     <input id="room-name-input" type="text" size="100"><br> {% endcomment %}
-                    <a href="/user/adminchat/" class="btn btn-success" type="button" id="myButton">CHAT WITH OUR CUSTOMER SERVICE</a>
+                    <a href="" class="btn btn-success" type="button" id="myButton">CHAT WITH OUR CUSTOMER SERVICE</a>
                     <p>Note: For any inquiries related to customer service, please use the chat option.</p>
                                         
                     <script>
